@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Tentang Sistem | Prediksi Emas AI</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-custom navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-decoration-none" href="{{ url_for('home') }}">
+                <div class="logo-container">
+                    <img src="{{ url_for('static', filename='img/logo_antam.png') }}" alt="Logo" width="38" onerror="this.style.display='none'">
+                </div>
+                <span class="navbar-title-main">Prediksi Harga Emas Antam</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fa-solid fa-bars fs-3" style="color: #F8FAFC;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mt-3 mt-lg-0 align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}"><i class="fa-solid fa-house"></i> Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}"><i class="fa-solid fa-chart-pie"></i> Dasbor Analitik</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('about') }}"><i class="fa-solid fa-circle-info"></i> Tentang Sistem</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        
+        <div class="glass-card text-center position-relative overflow-hidden">
+            <div style="position: absolute; top: -50px; left: -50px; font-size: 15rem; color: rgba(212, 175, 55, 0.05); z-index: 0;"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div style="position: relative; z-index: 1;">
+                <h3 class="fw-bold" style="color: var(--primary-dark);">Penerapan Support Vector Regression (SVR)</h3>
+                <h5 class="text-muted fw-medium mb-4">Pada Sistem Pendukung Keputusan Prediksi Harga Emas Multivariat</h5>
+                <hr style="width: 50px; border: 2px solid #D4AF37; opacity: 1; margin: 0 auto 20px auto;">
+                <p class="mb-1 fw-bold text-dark">Ruben Setiaji</p>
+                <p class="text-muted fw-medium small mb-0">Program Studi Teknik Informatika</p>
+                <p class="text-muted fw-medium small">Universitas Tarumanagara (UNTAR)</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            
+            <div class="col-lg-5">
+                <div class="glass-card h-100">
+                    <div class="section-title"><i class="fa-solid fa-network-wired text-primary me-2"></i>Arsitektur Pipeline Data</div>
+                    <p class="small text-muted fw-medium mb-4">Alur kerja sistem ini dirancang secara otomatis mulai dari ekstraksi data hingga kalkulasi prediksi di sisi klien.</p>
+                    
+                    <div class="p-3 mb-3 text-center fw-bold shadow-sm" style="background: var(--primary-dark); color: white; border-radius: 12px;">
+                        <i class="fa-solid fa-earth-asia text-warning mb-2 fs-4"></i><br>
+                        1. Data Acquisition (Real-Time)
+                        <div class="fw-normal mt-1 opacity-75" style="font-size: 0.8rem;">Scraping Logam Mulia & API Makro (YFinance)</div>
+                    </div>
+                    
+                    <div class="text-center text-warning fs-3 mb-3"><i class="fa-solid fa-caret-down"></i></div>
+                    
+                    <div class="p-3 mb-3 text-center fw-bold shadow-sm" style="background: var(--gold-gradient); color: var(--primary-dark); border-radius: 12px;">
+                        <i class="fa-solid fa-filter mb-2 fs-4"></i><br>
+                        2. Data Preprocessing
+                        <div class="fw-normal mt-1" style="font-size: 0.8rem;">Penanganan Data Kosong & Standarisasi (Z-Score)</div>
+                    </div>
+                    
+                    <div class="text-center text-warning fs-3 mb-3"><i class="fa-solid fa-caret-down"></i></div>
+                    
+                    <div class="p-3 mb-3 text-center fw-bold shadow-sm" style="background: var(--primary-dark); color: white; border-radius: 12px;">
+                        <i class="fa-solid fa-microchip text-warning mb-2 fs-4"></i><br>
+                        3. Machine Learning Core
+                        <div class="fw-normal mt-1 opacity-75" style="font-size: 0.8rem;">Prediksi SVR dengan Kernel Radial Basis Function</div>
+                    </div>
+                    
+                    <div class="text-center text-warning fs-3 mb-3"><i class="fa-solid fa-caret-down"></i></div>
+                    
+                    <div class="p-3 text-center fw-bold shadow-sm" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white; border-radius: 12px;">
+                        <i class="fa-solid fa-desktop text-warning mb-2 fs-4"></i><br>
+                        4. Decision Support System (DSS)
+                        <div class="fw-normal mt-1 opacity-75" style="font-size: 0.8rem;">Visualisasi Flask, Analisis Tren, & Kalkulator Profit</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="glass-card h-100">
+                    <div class="section-title"><i class="fa-solid fa-book-open text-warning me-2"></i>Landasan Metodologi SVR</div>
+                    
+                    <p class="text-muted fw-medium" style="line-height: 1.8; text-align: justify;">
+                        <strong style="color: var(--primary-dark);">Support Vector Regression (SVR)</strong> adalah algoritma <i>supervised learning</i> yang merupakan pengembangan dari Support Vector Machine (SVM). Berbeda dengan regresi linier biasa yang berusaha meminimalkan error secara mutlak, SVR menggunakan prinsip batas margin toleransi. Algoritma ini mencari fungsi regresi yang mendatar namun tetap merangkum data latih di dalam margin tersebut, membuatnya kebal terhadap data anomali (<i>outlier</i>).
+                    </p>
+                    
+                    <div class="alert alert-light border border-warning my-4 small shadow-sm" role="alert" style="border-radius: 12px;">
+                        <i class="fa-solid fa-lightbulb text-warning me-2 fs-5"></i>
+                        <strong style="color: var(--primary-dark);">Mengapa Kernel RBF?</strong> Harga emas sangat fluktuatif dan tidak bergerak lurus (non-linier). Kernel <i>Radial Basis Function</i> (RBF) memetakan kerumitan data harga ini ke dimensi matematis yang lebih tinggi, sehingga pola yang rumit menjadi dapat diprediksi dengan akurasi maksimal.
+                    </div>
+
+                    <h6 class="fw-bold mt-4 mb-3" style="color: var(--primary-dark);"><i class="fa-solid fa-layer-group text-primary me-2"></i> Parameter Independen (Multivariat)</h6>
+                    <ul class="list-unstyled text-muted fw-medium" style="line-height: 2;">
+                        <li><i class="fa-solid fa-check-circle text-warning me-2"></i> <strong class="text-dark">Harga Emas Antam (H-1):</strong> Basis historis momentum permintaan pasar lokal.</li>
+                        <li><i class="fa-solid fa-check-circle text-warning me-2"></i> <strong class="text-dark">Emas Global (XAU/USD):</strong> Sentimen acuan harga emas dunia per <i>Troy Ounce</i>.</li>
+                        <li><i class="fa-solid fa-check-circle text-warning me-2"></i> <strong class="text-dark">Kurs USD/IDR:</strong> Variabel penentu krusial karena emas global dibeli dalam Dolar AS.</li>
+                        <li><i class="fa-solid fa-check-circle text-warning me-2"></i> <strong class="text-dark">Indeks Dolar (DXY):</strong> Mengukur dominasi dolar; berbanding terbalik dengan harga emas.</li>
+                        <li><i class="fa-solid fa-check-circle text-warning me-2"></i> <strong class="text-dark">Harga Minyak WTI:</strong> Berfungsi sebagai proksi inflasi yang sering memicu insting pembelian emas.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 AI Support Vector Regression | Universitas Tarumanagara
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
