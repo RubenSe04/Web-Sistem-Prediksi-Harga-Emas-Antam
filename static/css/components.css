@@ -1,0 +1,665 @@
+/* ==========================================================================
+   COMPONENTS — EXECUTIVE CARDS, KPI METRICS, CHARTS, FORMS, TABLES, & MODALS
+   ========================================================================== */
+
+/* ==========================================================================
+   1. SURFACE CARDS & PANEL HEADERS
+   ========================================================================== */
+.surface-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-card);
+    transition: border-color var(--transition-fast);
+}
+
+.surface-card-highlight {
+    border-color: var(--border-gold-strong);
+    background: linear-gradient(180deg, rgba(212, 175, 55, 0.05) 0%, var(--bg-surface) 100%);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.panel-title-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.panel-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    background-color: var(--gold-subtle);
+    border: 1px solid var(--border-gold);
+    color: var(--gold-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.panel-title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.panel-subtitle {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    margin: 2px 0 0 0;
+}
+
+/* ==========================================================================
+   2. EXECUTIVE KPI METRIC CARDS (SESUAI REFERENSI GAMBAR)
+   ========================================================================== */
+.kpi-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    height: 100%;
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-gold-strong);
+}
+
+.kpi-icon-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, rgba(212, 175, 55, 0.06) 100%);
+    border: 1px solid var(--border-gold-strong);
+    color: var(--gold-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.kpi-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.kpi-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 4px 0;
+}
+
+.kpi-value {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 2px 0;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kpi-meta {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ==========================================================================
+   3. TOMBOL & INTERAKSI (MIN TOUCH TARGET 44x44px)
+   ========================================================================== */
+.btn-gold-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 48px;
+    padding: var(--space-3) var(--space-6);
+    background: var(--gold-btn-gradient);
+    color: var(--text-on-gold) !important;
+    font-weight: 700;
+    font-size: var(--text-base);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    box-shadow: var(--shadow-gold-subtle);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    text-decoration: none;
+}
+
+.btn-gold-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.28);
+}
+
+.btn-gold-primary:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--touch-target-min);
+    padding: 0 var(--space-4);
+    background-color: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border-gold);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-action i {
+    color: var(--gold-primary);
+}
+
+.btn-action:hover {
+    background-color: var(--gold-subtle);
+    border-color: var(--gold-primary);
+    color: var(--text-primary);
+}
+
+.btn-action.active {
+    background: var(--gold-pill-gradient);
+    color: var(--text-on-gold);
+    border-color: transparent;
+}
+
+.btn-action.active i {
+    color: var(--text-on-gold);
+}
+
+.btn-action-danger {
+    border-color: var(--status-danger-border);
+    color: var(--status-danger);
+}
+
+.btn-action-danger i {
+    color: var(--status-danger);
+}
+
+.btn-action-danger:hover {
+    background-color: var(--status-danger-bg);
+    border-color: var(--status-danger);
+    color: var(--status-danger);
+}
+
+.btn-icon-only {
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-input);
+    border: 1px solid var(--status-danger-border);
+    color: var(--status-danger);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.btn-icon-only:hover {
+    background-color: var(--status-danger-bg);
+}
+
+/* ==========================================================================
+   4. FORM CONTROLS & CUSTOM RANGE SLIDER
+   ========================================================================== */
+.form-label-custom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2);
+}
+
+.form-value-badge {
+    background-color: var(--gold-subtle);
+    border: 1px solid var(--border-gold);
+    color: var(--gold-bright);
+    padding: 2px 10px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+}
+
+.input-dark,
+.form-control.input-dark {
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: var(--radius-sm);
+    min-height: var(--touch-target-min);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-base);
+    font-weight: 600;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.input-dark:focus,
+.form-control.input-dark:focus {
+    border-color: var(--gold-primary) !important;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18) !important;
+}
+
+.input-group-text-dark {
+    background-color: var(--bg-surface-elevated) !important;
+    color: var(--gold-primary) !important;
+    border: 1px solid var(--border-subtle) !important;
+    font-weight: 700;
+}
+
+/* Slider Range Emas */
+.range-gold {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    outline: none;
+    cursor: pointer;
+}
+
+.range-gold::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--gold-primary);
+    border: 2px solid var(--text-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform var(--transition-fast);
+}
+
+.range-gold::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+.range-limits {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   5. KOTAK HASIL PREDIKSI & EXECUTIVE OUTLOOK
+   ========================================================================== */
+.prediction-display-box {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-gold-strong);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.prediction-eyebrow {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.prediction-price-main {
+    font-size: clamp(1.85rem, 3.2vw, 2.5rem);
+    font-weight: 800;
+    color: var(--gold-primary);
+    margin: var(--space-3) 0;
+    letter-spacing: -0.02em;
+}
+
+.prediction-divider {
+    width: 64px;
+    height: 2px;
+    background-color: var(--border-gold-strong);
+    margin: var(--space-3) auto;
+}
+
+.outlook-banner {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-gold-strong);
+    border-left: 4px solid var(--gold-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+}
+
+/* ==========================================================================
+   6. CHART CONTAINERS (TERKUNCI AGAR TIDAK OVERFLOW)
+   ========================================================================== */
+.chart-box-lg {
+    position: relative;
+    height: 340px;
+    width: 100%;
+}
+
+.chart-box-md {
+    position: relative;
+    height: 270px;
+    width: 100%;
+}
+
+.chart-box-sm {
+    position: relative;
+    height: 220px;
+    width: 100%;
+}
+
+/* ==========================================================================
+   7. TABEL DATA HISTORIS & BADGE STATUS
+   ========================================================================== */
+.table-scroll-container {
+    max-height: 380px;
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+}
+
+.table-executive {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--text-primary);
+    margin-bottom: 0;
+}
+
+.table-executive thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: var(--bg-surface-elevated);
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-gold);
+    white-space: nowrap;
+}
+
+.table-executive tbody td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.table-executive tbody tr:hover td {
+    background-color: var(--bg-surface-hover);
+}
+
+.table-executive tbody tr.row-live td {
+    background-color: rgba(212, 175, 55, 0.08);
+    font-weight: 700;
+    color: var(--gold-bright);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-xs);
+    font-weight: 700;
+}
+
+.status-badge-success {
+    background-color: var(--status-success-bg);
+    color: var(--status-success);
+    border: 1px solid var(--status-success-border);
+}
+
+.status-badge-danger {
+    background-color: var(--status-danger-bg);
+    color: var(--status-danger);
+    border: 1px solid var(--status-danger-border);
+}
+
+.status-badge-gold {
+    background-color: var(--gold-subtle);
+    color: var(--gold-bright);
+    border: 1px solid var(--border-gold-strong);
+}
+
+/* ==========================================================================
+   8. SKELETON LOADER & TOAST NOTIFICATION
+   ========================================================================== */
+.skeleton-line {
+    display: inline-block;
+    height: 1.2em;
+    width: 85%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--bg-surface-elevated) 25%, #242936 50%, var(--bg-surface-elevated) 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.4s infinite linear;
+}
+
+@keyframes skeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.toast-notification {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background-color: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--gold-primary);
+    border-left: 4px solid var(--gold-primary);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-elevated);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    z-index: 1090;
+    transform: translateY(120%);
+    opacity: 0;
+    transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+.toast-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ==========================================================================
+   9. QUICK SEARCH MODAL (CTRL+K)
+   ========================================================================== */
+.search-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(4, 5, 7, 0.78);
+    backdrop-filter: blur(4px);
+    z-index: 1080;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 8vh var(--space-4) var(--space-4);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-fast), visibility var(--transition-fast);
+}
+
+.search-modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.search-modal-dialog {
+    width: 100%;
+    max-width: 620px;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-gold-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-elevated);
+    overflow: hidden;
+}
+
+.search-modal-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+    background-color: var(--bg-input);
+}
+
+.search-modal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: var(--text-base);
+    min-height: 40px;
+    outline: none;
+}
+
+.search-modal-results {
+    max-height: 360px;
+    overflow-y: auto;
+    padding: var(--space-2);
+    list-style: none;
+    margin: 0;
+}
+
+.search-result-item a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: background-color var(--transition-fast);
+}
+
+.search-result-item a:hover,
+.search-result-item a:focus {
+    background-color: var(--gold-subtle);
+}
+
+.search-result-category {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--gold-primary);
+    text-transform: uppercase;
+}
+
+.search-result-title {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 2px 0;
+}
+
+.search-result-desc {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ==========================================================================
+   10. PIPELINE & METHODOLOGY CARDS (HALAMAN TENTANG SISTEM)
+   ========================================================================== */
+.pipeline-step-card {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--gold-primary);
+    border-radius: var(--radius-sm);
+    padding: var(--space-4);
+    position: relative;
+}
+
+.pipeline-step-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--gold-primary);
+    background-color: var(--gold-subtle);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* ==========================================================================
+   11. PRINT MEDIA QUERY (LAPORAN PDF BERSIH)
+   ========================================================================== */
+@media print {
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    .sidebar, .topbar, .ticker-bar, .btn-action, .btn-gold-primary, .site-footer, .search-modal-overlay {
+        display: none !important;
+    }
+    .main-wrapper {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+    .surface-card, .kpi-card {
+        background-color: #ffffff !important;
+        border: 1px solid #cccccc !important;
+        box-shadow: none !important;
+        color: #000000 !important;
+        page-break-inside: avoid;
+    }
+    .page-title, .panel-title, .kpi-value, .table-executive td, .table-executive th {
+        color: #000000 !important;
+    }
+}

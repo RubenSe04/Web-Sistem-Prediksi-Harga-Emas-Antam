@@ -1,0 +1,13 @@
+<div class="search-modal-overlay" id="searchModalOverlay" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle" aria-hidden="true">
+    <div class="search-modal-dialog">
+        <div class="search-modal-header">
+            <i class="fa-solid fa-magnifying-glass text-gold" aria-hidden="true"></i>
+            <label for="quickSearchInput" id="searchModalTitle" class="visually-hidden">Pencarian Cepat Internal</label>
+            <input type="search" id="quickSearchInput" class="search-modal-input" placeholder="Ketik fitur, metrik (RMSE, R2, SMA), kalkulator pajak, atau halaman..." autocomplete="off">
+            <button type="button" class="btn-action" id="btnCloseSearch" style="min-height: 34px; padding: 0 10px;" aria-label="Tutup dialog pencarian">
+                Esc
+            </button>
+        </div>
+        <ul class="search-modal-results" id="quickSearchResults" aria-live="polite"></ul>
+    </div>
+</div>

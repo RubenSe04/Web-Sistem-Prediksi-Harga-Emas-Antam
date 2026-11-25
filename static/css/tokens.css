@@ -1,0 +1,90 @@
+/* ==========================================================================
+   DESIGN TOKENS — EXECUTIVE DARK & ROYAL GOLD THEME
+   Standar WCAG AA Contrast & Modular Design System
+   ========================================================================== */
+
+:root {
+    /* 1. PALET WARNA UTAMA (DEEP BLACK & SURFACE) */
+    --bg-canvas: #07080A;
+    --bg-sidebar: #0A0B0E;
+    --bg-surface: #111318;
+    --bg-surface-elevated: #171A21;
+    --bg-surface-hover: #1D212A;
+    --bg-input: #0B0D11;
+
+    /* 2. PALET AKSEN ROYAL GOLD (TERINSPIRASI EXECUTIVE DASHBOARD) */
+    --gold-primary: #D4AF37;
+    --gold-bright: #E5C158;
+    --gold-deep: #B58E24;
+    --gold-subtle: rgba(212, 175, 55, 0.12);
+    --gold-subtle-hover: rgba(212, 175, 55, 0.20);
+    --gold-pill-gradient: linear-gradient(90deg, #D4AF37 0%, #B8891E 100%);
+    --gold-btn-gradient: linear-gradient(135deg, #DDB840 0%, #B8891E 100%);
+
+    /* 3. TIPOGRAFI & KONTRAS TEKS (WCAG AA COMPLIANT >= 4.5:1) */
+    --text-primary: #F8FAFC;      /* ~19:1 di atas #07080A */
+    --text-secondary: #CBD5E1;    /* ~13:1 di atas #111318 */
+    --text-muted: #94A3B8;        /* ~6.8:1 di atas #111318 */
+    --text-on-gold: #07080A;      /* Kontras tajam di atas tombol emas */
+
+    /* 4. WARNA STATUS SEMANTIK */
+    --status-success: #10B981;
+    --status-success-bg: rgba(16, 185, 129, 0.14);
+    --status-success-border: rgba(16, 185, 129, 0.35);
+
+    --status-danger: #F43F5E;
+    --status-danger-bg: rgba(244, 63, 94, 0.14);
+    --status-danger-border: rgba(244, 63, 94, 0.35);
+
+    --status-warning: #F59E0B;
+    --status-warning-bg: rgba(245, 158, 11, 0.14);
+    --status-info: #38BDF8;
+
+    /* 5. BORDER & GARIS PEMISAH */
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-gold: rgba(212, 175, 55, 0.22);
+    --border-gold-strong: rgba(212, 175, 55, 0.48);
+
+    /* 6. SKALA TIPOGRAFI */
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+    --text-xs: 0.8125rem;   /* 13px - batas minimum teks penting */
+    --text-sm: 0.875rem;    /* 14px */
+    --text-base: 1rem;      /* 16px - standar body text */
+    --text-lg: 1.125rem;    /* 18px */
+    --text-xl: 1.25rem;     /* 20px */
+    --text-2xl: 1.5rem;     /* 24px */
+    --text-3xl: 1.875rem;   /* 30px */
+
+    --leading-tight: 1.25;
+    --leading-normal: 1.55;
+    --leading-relaxed: 1.65;
+
+    /* 7. SPACING & UKURAN LAYOUT */
+    --sidebar-width: 264px;
+    --topbar-height: 68px;
+    --touch-target-min: 44px;
+
+    --space-1: 0.25rem;  /* 4px */
+    --space-2: 0.5rem;   /* 8px */
+    --space-3: 0.75rem;  /* 12px */
+    --space-4: 1rem;     /* 16px */
+    --space-5: 1.25rem;  /* 20px */
+    --space-6: 1.5rem;   /* 24px */
+    --space-8: 2rem;     /* 32px */
+
+    /* 8. BORDER RADIUS & SHADOWS */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-pill: 9999px;
+
+    --shadow-card: 0 8px 24px -4px rgba(0, 0, 0, 0.55);
+    --shadow-elevated: 0 16px 36px -6px rgba(0, 0, 0, 0.72);
+    --shadow-gold-subtle: 0 4px 16px rgba(212, 175, 55, 0.18);
+
+    /* 9. TRANSISI (150ms - 250ms) */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}

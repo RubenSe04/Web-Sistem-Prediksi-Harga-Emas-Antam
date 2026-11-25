@@ -1,400 +1,217 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dasbor Analitik | Prediksi Emas AI</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
+{% extends 'base.html' %}
+{% set breadcrumb_title = 'Dasbor Analitik & Evaluasi Model' %}
 
-    <nav class="navbar navbar-expand-lg navbar-custom navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand text-decoration-none" href="{{ url_for('home') }}">
-                <div class="logo-container">
-                    <img src="{{ url_for('static', filename='img/logo_antam.png') }}" alt="Logo" width="38" onerror="this.style.display='none'">
-                </div>
-                <span class="navbar-title-main">Prediksi Harga Emas Antam</span>
-            </a>
-            
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fa-solid fa-bars fs-3" style="color: #F8FAFC;"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto mt-3 mt-lg-0 align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}"><i class="fa-solid fa-house"></i> Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('dashboard') }}"><i class="fa-solid fa-chart-pie"></i> Dasbor Analitik</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}"><i class="fa-solid fa-circle-info"></i> Tentang</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{% block title %}Dasbor Analitik & Evaluasi SVR | Sistem Prediksi Harga Emas Antam{% endblock %}
+{% block meta_description %}Laporan performa ilmiah model Support Vector Regression (RMSE Rp 125.420, MAE Rp 69.409, R-Squared 93.02%), analisis tren SMA/RSI, dan bobot variabel makroekonomi.{% endblock %}
 
-    <div class="container mt-4">
-        
-        <div class="glass-card">
-            <div class="section-title"><i class="fa-solid fa-square-check text-primary"></i> Validasi Ilmiah: Performa Mesin SVR</div>
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <div class="info-box shadow-sm" style="flex-direction: row; justify-content: flex-start; text-align: left; padding: 20px;">
-                        <div class="info-icon" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="fa-solid fa-ruler-combined"></i></div>
-                        <div>
-                            <div class="info-label" style="font-size: 0.7rem;">Root Mean Square Error</div>
-                            <div class="info-value text-primary fs-4" id="valRMSE">Memuat...</div>
-                            <div class="info-sub mt-1">Tingkat simpangan error maksimal.</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="info-box shadow-sm" style="flex-direction: row; justify-content: flex-start; text-align: left; padding: 20px;">
-                        <div class="info-icon icon-blue" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="fa-solid fa-bullseye"></i></div>
-                        <div>
-                            <div class="info-label" style="font-size: 0.7rem;">Mean Absolute Error</div>
-                            <div class="info-value text-primary fs-4" id="valMAE">Memuat...</div>
-                            <div class="info-sub mt-1">Rata-rata selisih harga absolut.</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="info-box shadow-sm" style="flex-direction: row; justify-content: flex-start; text-align: left; padding: 20px;">
-                        <div class="info-icon" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="fa-solid fa-percent"></i></div>
-                        <div>
-                            <div class="info-label" style="font-size: 0.7rem;">R-Squared (R²) Score</div>
-                            <div class="info-value text-primary fs-4" id="valR2">Memuat...</div>
-                            <div class="info-sub mt-1">Tingkat kecocokan variabel model.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+{% block content %}
+<!-- HEADER HALAMAN (TEPAT SATU H1) -->
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Dasbor Analitik &amp; Validasi Model SVR</h1>
+        <p class="page-subtitle">Evaluasi akurasi statistik, analisis momentum teknikal (SMA &amp; RSI 14), dan kontribusi variabel independen.</p>
+    </div>
+    <div class="page-actions">
+        <button type="button" onclick="window.print()" class="btn-action" aria-label="Cetak laporan analitik ke PDF">
+            <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+            <span>Cetak Laporan PDF</span>
+        </button>
+        <button type="button" onclick="downloadDashboardCSV()" class="btn-action" aria-label="Ekspor tabel historis ke CSV">
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
+            <span>Ekspor CSV</span>
+        </button>
+    </div>
+</div>
 
-        <div class="row g-4">
-            <div class="col-lg-8">
-                <div class="glass-card h-100">
-                    <div class="section-title d-flex justify-content-between align-items-center">
-                        <span><i class="fa-solid fa-chart-line text-warning"></i> Tren Harga Emas (Historis vs Live)</span>
-                        <button id="btnToggleSMA" class="btn btn-sm btn-outline-secondary" style="font-size: 0.75rem; font-weight: bold; border-radius: 8px;">
-                            <i class="fa-solid fa-eye-slash"></i> Sembunyikan SMA
-                        </button>
-                    </div>
-                    <div style="height: 380px; width: 100%;">
-                        <canvas id="historicalChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="glass-card h-100">
-                    <div class="section-title"><i class="fa-solid fa-magnifying-glass-chart text-success"></i> Bobot Variabel</div>
-                    <p class="text-muted small mb-3">Analisis korelasi variabel independen terhadap pergerakan harga.</p>
-                    <div style="height: 300px; width: 100%;">
-                        <canvas id="importanceChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-card mt-4 border-start border-5 border-warning shadow-sm">
-            <div class="section-title"><i class="fa-solid fa-flask-vial text-warning"></i> "What-If" Simulator: Analisis Sensitivitas Pasar</div>
-            <p class="text-muted small mb-4">Uji kecerdasan AI SVR: Masukkan skenario ekonomi fiktif untuk melihat seberapa adaptif model dalam memprediksi harga Antam di masa krisis atau euforia.</p>
-            
-            <div class="row">
-                <div class="col-lg-7">
-                    <div class="p-4 rounded border" style="background-color: var(--bg-color);">
-                        <div class="mb-4">
-                            <label class="form-label small fw-bold d-flex justify-content-between">
-                                <span class="text-muted">Kurs USD/IDR (Simulasi)</span>
-                                <span class="text-primary fs-6 fw-bolder">Rp <span id="valSimKurs">16.000</span></span>
-                            </label>
-                            <input type="range" class="form-range" id="simKurs" min="14000" max="18000" step="50" value="16000">
-                            <div class="d-flex justify-content-between text-muted" style="font-size: 0.65rem;"><span>Rupiah Menguat (14.000)</span><span>Rupiah Melemah (18.000)</span></div>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label class="form-label small fw-bold d-flex justify-content-between">
-                                <span class="text-muted">Emas Dunia / XAU (USD/oz)</span>
-                                <span class="text-primary fs-6 fw-bolder">$ <span id="valSimGold">2.300</span></span>
-                            </label>
-                            <input type="range" class="form-range" id="simGold" min="1800" max="3000" step="10" value="2300">
-                        </div>
-                        
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <label class="form-label small fw-bold text-muted">Indeks Dolar (DXY)</label>
-                                <input type="number" class="form-control" id="simDxy" value="104" step="0.1">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small fw-bold text-muted">Minyak WTI (USD)</label>
-                                <input type="number" class="form-control" id="simWti" value="80" step="1">
-                            </div>
-                        </div>
-                        
-                        <button id="btnRunSim" class="btn btn-gold w-100 mt-4 py-2 fs-6 shadow-sm">
-                            <i class="fa-solid fa-microchip me-1"></i> Jalankan Prediksi SVR
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="col-lg-5 text-center d-flex flex-column justify-content-center mt-4 mt-lg-0">
-                    <div id="simResultBox" class="p-4 border rounded shadow-sm h-100 d-flex flex-column justify-content-center" style="background-color: var(--primary-dark); color: white;">
-                        <span class="small opacity-75 d-block mb-2 text-uppercase" style="letter-spacing: 1px;">Hasil Prediksi Skenario</span>
-                        <h1 id="simResultValue" class="fw-bold text-warning display-5">Rp -</h1>
-                        <hr class="opacity-25 my-3">
-                        <div id="simComparison" class="small text-light opacity-75">
-                            Sesuaikan variabel di samping dan klik jalankan untuk melihat reaksi model SVR.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="glass-card">
-                    <div class="section-title d-flex justify-content-between align-items-center">
-                        <span><i class="fa-solid fa-table-list text-info"></i> Data Historis & Sinyal Tren</span>
-                        <span class="badge bg-light text-dark border border-secondary" style="font-weight: 500;"><i class="fa-solid fa-database"></i> Live Data Feed</span>
-                    </div>
-                    
-                    <div class="table-responsive rounded shadow-sm" style="max-height: 400px; border: 1px solid var(--border-color);">
-                        <table class="table table-hover table-striped mb-0 text-center" style="font-size: 0.9rem;">
-                            <thead style="position: sticky; top: 0; background-color: var(--primary-dark); color: white; z-index: 1;">
-                                <tr>
-                                    <th scope="col" class="py-3 fw-semibold">Tanggal</th>
-                                    <th scope="col" class="py-3 fw-semibold">Harga Antam Asli (1gr)</th>
-                                    <th scope="col" class="py-3 fw-semibold">SMA 7 (Jangka Pendek)</th>
-                                    <th scope="col" class="py-3 fw-semibold">SMA 30 (Jangka Panjang)</th>
-                                    <th scope="col" class="py-3 fw-semibold">Sinyal Pasar (Indikator DSS)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dataTableBody" style="background-color: var(--card-bg);">
-                                <tr><td colspan="5" class="text-muted py-4 fw-medium">Memuat data dari server...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
+<!-- SEKSI 1: METRIK VALIDASI ILMIAH -->
+<section class="mb-4" aria-labelledby="headingValidationMetrics">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 id="headingValidationMetrics" class="panel-title">
+            <i class="fa-solid fa-award text-gold me-2" aria-hidden="true"></i>Metrik Pengujian &amp; Evaluasi Model (Kernel RBF)
+        </h2>
+        <span class="status-badge status-badge-success">
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i> Tervalidasi Data Uji
+        </span>
     </div>
 
-    <footer>
-        &copy; 2026 AI Support Vector Regression | Universitas Tarumanagara
-    </footer>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <article class="kpi-card">
+                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-ruler-combined"></i></div>
+                <div class="kpi-content">
+                    <p class="kpi-label">Root Mean Square Error (RMSE)</p>
+                    <h3 id="valRMSE" class="kpi-value"><span class="skeleton-line"></span></h3>
+                    <span class="kpi-meta">Toleransi simpangan kuadrat rata-rata</span>
+                </div>
+            </article>
+        </div>
+        <div class="col-md-4">
+            <article class="kpi-card">
+                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-bullseye"></i></div>
+                <div class="kpi-content">
+                    <p class="kpi-label">Mean Absolute Error (MAE)</p>
+                    <h3 id="valMAE" class="kpi-value"><span class="skeleton-line"></span></h3>
+                    <span class="kpi-meta">Rata-rata selisih absolut prediksi</span>
+                </div>
+            </article>
+        </div>
+        <div class="col-md-4">
+            <article class="kpi-card">
+                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="kpi-content">
+                    <p class="kpi-label">Koefisien Determinasi (R²)</p>
+                    <h3 id="valR2" class="kpi-value" style="color: var(--status-success);"><span class="skeleton-line"></span></h3>
+                    <span class="kpi-meta">Daya jelas 5 variabel makroekonomi</span>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        let histChart = null;
+<!-- SEKSI 2: GRAFIK TREN HISTORIS & BOBOT VARIABEL -->
+<div class="row g-4 mb-4" id="historicalChartSection">
+    <div class="col-lg-8">
+        <section class="surface-card h-100" aria-labelledby="headingTrendChart">
+            <div class="panel-header">
+                <div class="panel-title-group">
+                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-wave-square"></i></span>
+                    <div>
+                        <h2 id="headingTrendChart" class="panel-title">Tren Harga Emas Antam, Moving Average &amp; RSI</h2>
+                        <p class="panel-subtitle">Pergerakan 60 periode terakhir disertai indikator teknikal SMA 7, SMA 30, dan RSI 14.</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" id="btnToggleSMA" class="btn-action active" aria-pressed="true">
+                        <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+                        <span>Garis SMA</span>
+                    </button>
+                    <button type="button" id="btnToggleRSI" class="btn-action" aria-pressed="false">
+                        <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+                        <span>RSI (14)</span>
+                    </button>
+                </div>
+            </div>
 
-        document.addEventListener("DOMContentLoaded", function() {
-            
-            // FETCH DASHBOARD DATA
-            fetch('/api/chart_data')
-            .then(response => response.json())
-            .then(data => {
-                if(data.status === 'success') {
-                    
-                    if(data.metrics) {
-                        document.getElementById('valRMSE').textContent = data.metrics.rmse;
-                        document.getElementById('valMAE').textContent = data.metrics.mae;
-                        document.getElementById('valR2').textContent = data.metrics.r2;
-                    }
+            <div class="chart-box-lg">
+                <canvas id="historicalChart" aria-label="Grafik Garis Tren Harga Emas Antam Historis" role="img"></canvas>
+            </div>
+        </section>
+    </div>
 
-                    const ctxHist = document.getElementById('historicalChart').getContext('2d');
-                    const pointColors = data.labels.map((l, i) => i === data.labels.length - 1 ? '#ef4444' : '#0F172A');
-                    const pointRadii = data.labels.map((l, i) => i === data.labels.length - 1 ? 6 : 3);
+    <div class="col-lg-4" id="variableImportanceSection">
+        <section class="surface-card h-100" aria-labelledby="headingImportanceChart">
+            <div class="panel-header">
+                <div class="panel-title-group">
+                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span>
+                    <div>
+                        <h2 id="headingImportanceChart" class="panel-title">Peringkat Pengaruh Variabel</h2>
+                        <p class="panel-subtitle">Kontribusi fitur independen terhadap harga Antam.</p>
+                    </div>
+                </div>
+            </div>
 
-                    histChart = new Chart(ctxHist, {
-                        type: 'line',
-                        data: {
-                            labels: data.labels,
-                            datasets: [
-                                {
-                                    label: 'Harga Antam Asli (IDR)',
-                                    data: data.antam_prices,
-                                    borderColor: '#0F172A',
-                                    backgroundColor: 'rgba(15, 23, 42, 0.05)',
-                                    borderWidth: 2,
-                                    pointBackgroundColor: pointColors,
-                                    pointRadius: pointRadii,
-                                    fill: true,
-                                    tension: 0.3,
-                                    order: 3
-                                },
-                                {
-                                    label: 'SMA 7 (Tren Mingguan)',
-                                    data: data.sma7,
-                                    borderColor: '#10B981', // Emerald green
-                                    borderWidth: 2,
-                                    pointRadius: 0,
-                                    fill: false,
-                                    borderDash: [5, 5],
-                                    tension: 0.4,
-                                    order: 2
-                                },
-                                {
-                                    label: 'SMA 30 (Tren Bulanan)',
-                                    data: data.sma30,
-                                    borderColor: '#EF4444', // Red
-                                    borderWidth: 2,
-                                    pointRadius: 0,
-                                    fill: false,
-                                    tension: 0.4,
-                                    order: 1
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            interaction: { mode: 'index', intersect: false },
-                            plugins: {
-                                legend: { position: 'top', labels: { boxWidth: 12, usePointStyle: true, font: { family: "'Plus Jakarta Sans', sans-serif", weight: '600' } } },
-                                tooltip: { 
-                                    backgroundColor: '#0F172A',
-                                    titleFont: { family: "'Plus Jakarta Sans', sans-serif" }, 
-                                    bodyFont: { family: "'Plus Jakarta Sans', sans-serif" },
-                                    callbacks: { label: function(context) { let val = context.parsed.y; return context.dataset.label + ': Rp ' + (val ? val.toLocaleString('id-ID') : '-'); } } 
-                                }
-                            },
-                            scales: {
-                                y: { grid: { color: '#E2E8F0', borderDash: [5, 5] }, ticks: { color: '#64748B', font: { family: "'Plus Jakarta Sans', sans-serif", weight: '500' } } },
-                                x: { grid: { display: false }, ticks: { color: '#64748B', font: { family: "'Plus Jakarta Sans', sans-serif", weight: '500' } } }
-                            }
-                        }
-                    });
+            <div class="chart-box-lg">
+                <canvas id="importanceChart" aria-label="Grafik Batang Bobot Variabel Independen" role="img"></canvas>
+            </div>
+        </section>
+    </div>
+</div>
 
-                    let smaVisible = true;
-                    const btnToggle = document.getElementById('btnToggleSMA');
-                    if (btnToggle) {
-                        btnToggle.addEventListener('click', function() {
-                            smaVisible = !smaVisible;
-                            histChart.setDatasetVisibility(1, smaVisible);
-                            histChart.setDatasetVisibility(2, smaVisible);
-                            histChart.update();
-                            
-                            this.innerHTML = smaVisible ? '<i class="fa-solid fa-eye-slash"></i> Sembunyikan SMA' : '<i class="fa-solid fa-eye"></i> Tampilkan SMA';
-                            this.classList.toggle('btn-outline-secondary', smaVisible);
-                            this.classList.toggle('btn-secondary', !smaVisible);
-                            this.classList.toggle('text-white', !smaVisible);
-                        });
-                    }
+<!-- SEKSI 3: PROPORSI FAKTOR PENGGERAK & PETA SENSITIVITAS -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <section class="surface-card h-100" aria-labelledby="headingDoughnutChart">
+            <div class="panel-header">
+                <div class="panel-title-group">
+                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-chart-pie"></i></span>
+                    <div>
+                        <h2 id="headingDoughnutChart" class="panel-title">Komposisi Faktor Pembentuk Harga</h2>
+                        <p class="panel-subtitle">Dominasi nilai tukar USD/IDR dan harga emas spot global (XAU/USD).</p>
+                    </div>
+                </div>
+            </div>
 
-                    if(data.importance) {
-                        const ctxImp = document.getElementById('importanceChart').getContext('2d');
-                        new Chart(ctxImp, {
-                            type: 'bar',
-                            data: {
-                                labels: data.importance.labels,
-                                datasets: [{
-                                    data: data.importance.values,
-                                    backgroundColor: ['#0F172A', '#3B82F6', '#64748B', '#D4AF37', '#FDE047'],
-                                    borderRadius: 4
-                                }]
-                            },
-                            options: {
-                                indexAxis: 'y',
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: { legend: { display: false } },
-                                scales: { 
-                                    x: { beginAtZero: true, max: 50, grid: { color: '#E2E8F0' }, ticks: { color: '#64748B', callback: v => v + '%' } },
-                                    y: { grid: { display: false }, ticks: { color: '#64748B', font: { family: "'Plus Jakarta Sans', sans-serif", weight: '600' } } }
-                                }
-                            }
-                        });
-                    }
+            <div class="chart-box-md">
+                <canvas id="doughnutChart" aria-label="Grafik Donat Proporsi Variabel Makroekonomi" role="img"></canvas>
+            </div>
+        </section>
+    </div>
 
-                    let tbodyHTML = '';
-                    for(let i = data.labels.length - 1; i >= 0; i--) {
-                        let date = data.labels[i];
-                        let price = data.antam_prices[i] ? 'Rp ' + data.antam_prices[i].toLocaleString('id-ID').replace(/,/g, '.') : '-';
-                        let sma7 = data.sma7[i] ? 'Rp ' + Math.round(data.sma7[i]).toLocaleString('id-ID').replace(/,/g, '.') : '-';
-                        let sma30 = data.sma30[i] ? 'Rp ' + Math.round(data.sma30[i]).toLocaleString('id-ID').replace(/,/g, '.') : '-';
+    <div class="col-lg-6">
+        <section class="surface-card h-100" aria-labelledby="headingRadarChart">
+            <div class="panel-header">
+                <div class="panel-title-group">
+                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-compass-drafting"></i></span>
+                    <div>
+                        <h2 id="headingRadarChart" class="panel-title">Peta Sensitivitas Makroekonomi</h2>
+                        <p class="panel-subtitle">Tingkat respons harga emas domestik terhadap guncangan tiap variabel.</p>
+                    </div>
+                </div>
+            </div>
 
-                        let signalBadge = '<span class="badge bg-secondary opacity-75">Menghimpun Data...</span>';
-                        if (data.sma7[i] && data.sma30[i]) {
-                            if (data.sma7[i] > data.sma30[i]) {
-                                signalBadge = '<span class="badge bg-success shadow-sm py-2 px-3"><i class="fa-solid fa-arrow-trend-up"></i> Uptrend (Beli)</span>';
-                            } else if (data.sma7[i] < data.sma30[i]) {
-                                signalBadge = '<span class="badge bg-danger shadow-sm py-2 px-3"><i class="fa-solid fa-arrow-trend-down"></i> Downtrend (Jual)</span>';
-                            } else {
-                                signalBadge = '<span class="badge bg-warning text-dark shadow-sm py-2 px-3"><i class="fa-solid fa-minus"></i> Sideways</span>';
-                            }
-                        }
+            <div class="chart-box-md">
+                <canvas id="radarChart" aria-label="Grafik Radar Sensitivitas Makroekonomi" role="img"></canvas>
+            </div>
+        </section>
+    </div>
+</div>
 
-                        let trClass = (i === data.labels.length - 1) ? 'class="table-warning fw-bold"' : '';
-                        tbodyHTML += `
-                            <tr ${trClass}>
-                                <td class="text-primary fw-semibold">${date}</td>
-                                <td class="fw-bold">${price}</td>
-                                <td>${sma7}</td>
-                                <td>${sma30}</td>
-                                <td>${signalBadge}</td>
-                            </tr>
-                        `;
-                    }
-                    document.getElementById('dataTableBody').innerHTML = tbodyHTML;
+<!-- SEKSI 4: TABEL LOG HISTORIS DENGAN PENCARIAN CEPAT -->
+<section class="surface-card mb-2" id="historyTableSection" aria-labelledby="headingDashboardTable">
+    <div class="panel-header">
+        <div class="panel-title-group">
+            <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-database"></i></span>
+            <div>
+                <h2 id="headingDashboardTable" class="panel-title">Basis Data Historis &amp; Sinyal Moving Average</h2>
+                <p class="panel-subtitle">Daftar lengkap harga harian beserta klasifikasi sinyal persilangan SMA 7 terhadap SMA 30.</p>
+            </div>
+        </div>
 
-                }
-            });
-            
-            // --- LOGIKA WHAT-IF SIMULATOR ---
-            
-            // Update teks slider saat digeser
-            document.getElementById('simKurs').addEventListener('input', function() {
-                document.getElementById('valSimKurs').textContent = parseInt(this.value).toLocaleString('id-ID').replace(/,/g, '.');
-            });
-            document.getElementById('simGold').addEventListener('input', function() {
-                document.getElementById('valSimGold').textContent = parseInt(this.value).toLocaleString('id-ID').replace(/,/g, '.');
-            });
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <div class="position-relative">
+                <label for="tableSearchFilter" class="visually-hidden">Filter Tanggal atau Sinyal</label>
+                <input type="search" id="tableSearchFilter" class="form-control input-dark" placeholder="Filter tanggal atau sinyal..." style="min-height: 40px; font-size: 0.875rem; min-width: 220px;">
+            </div>
+            <button type="button" onclick="downloadDashboardCSV()" class="btn-action" aria-label="Unduh tabel log historis ke CSV">
+                <i class="fa-solid fa-file-csv" aria-hidden="true"></i>
+                <span>Unduh CSV</span>
+            </button>
+        </div>
+    </div>
 
-            // Eksekusi prediksi saat tombol diklik
-            document.getElementById('btnRunSim').addEventListener('click', function() {
-                const btn = this;
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Mengkalkulasi SVR...';
-                btn.disabled = true;
+    <div class="table-scroll-container" tabindex="0" role="region" aria-label="Tabel Lengkap Data Historis dan Sinyal Pasar">
+        <table class="table-executive text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Harga Antam (1 Gram)</th>
+                    <th scope="col">SMA 7 (Pendek)</th>
+                    <th scope="col">SMA 30 (Panjang)</th>
+                    <th scope="col">Indikasi Tren (DSS)</th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+                <tr>
+                    <td><span class="skeleton-line"></span></td>
+                    <td><span class="skeleton-line"></span></td>
+                    <td><span class="skeleton-line"></span></td>
+                    <td><span class="skeleton-line"></span></td>
+                    <td><span class="skeleton-line"></span></td>
+                </tr>
+                <tr>
+                    <td><span class="skeleton-line"></span></td>
+                    <td><span class="skeleton-line"></span></td>
+                    <td><span class="skeleton-line"></span></td>
+                    <td><span class="skeleton-line"></span></td>
+                    <td><span class="skeleton-line"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
 
-                const payload = {
-                    kurs: document.getElementById('simKurs').value,
-                    gold_global: document.getElementById('simGold').value,
-                    dxy: document.getElementById('simDxy').value,
-                    wti: document.getElementById('simWti').value
-                };
-
-                fetch('/api/simulate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.status === 'success') {
-                        document.getElementById('simResultValue').textContent = data.formatted;
-                        document.getElementById('simComparison').innerHTML = '<i class="fa-solid fa-circle-check text-success fs-5 mb-2 d-block"></i> Skenario berhasil diproses oleh model SVR.';
-                    } else {
-                        alert("Gagal melakukan simulasi: " + data.message);
-                    }
-                })
-                .catch(err => console.error(err))
-                .finally(() => {
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                });
-            });
-
-        });
-    </script>
-</body>
-</html>
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="{{ url_for('static', filename='js/dashboard_charts.js') }}" defer></script>
+{% endblock %}

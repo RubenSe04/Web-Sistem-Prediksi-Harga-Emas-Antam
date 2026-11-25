@@ -1,0 +1,198 @@
+{
+  "brand": {
+    "name": "SVR Gold Analytics",
+    "subtitle": "Decision Support System",
+    "institution": "Universitas Tarumanagara",
+    "year": 2026
+  },
+  "author": {
+    "name": "Ruben Setiaji",
+    "program": "Program Studi Teknik Informatika",
+    "university": "Universitas Tarumanagara (UNTAR)",
+    "thesis_title": "Penerapan Support Vector Regression (SVR) Pada Sistem Pendukung Keputusan Prediksi Harga Emas Multivariat",
+    "summary": "Penelitian ini mengintegrasikan indikator makroekonomi global dan harga domestik untuk memproyeksikan harga emas batangan PT Antam Tbk (H+1) menggunakan algoritma Support Vector Regression berkernel Radial Basis Function (RBF)."
+  },
+  "pipeline": [
+    {
+      "step": "01",
+      "title": "Akuisisi Data Pasar",
+      "subtitle": "Ekstraksi Harga & Indikator Makro",
+      "description": "Pengambilan harga emas Antam (jual dan buyback) dari portal Logam Mulia serta data penutupan pasar global melalui Yahoo Finance API.",
+      "icon": "fa-earth-asia",
+      "badge": "Real-Time Sync"
+    },
+    {
+      "step": "02",
+      "title": "Pra-pemrosesan & Normalisasi",
+      "subtitle": "Pembersihan Data & StandardScaler",
+      "description": "Penanganan nilai kosong (interpolasi waktu) dan transformasi skala variabel multivariat menggunakan standarisasi Z-Score agar distribusi fitur setara.",
+      "icon": "fa-Sliders",
+      "badge": "Z-Score Scaling"
+    },
+    {
+      "step": "03",
+      "title": "Pemodelan Mesin SVR",
+      "subtitle": "Kernel Radial Basis Function (RBF)",
+      "description": "Pemetaan hubungan non-linier antar lima variabel makroekonomi ke ruang berdimensi tinggi dengan batas toleransi epsilon (ε-insensitive tube).",
+      "icon": "fa-microchip",
+      "badge": "R² = 93.02%"
+    },
+    {
+      "step": "04",
+      "title": "Sistem Pendukung Keputusan",
+      "subtitle": "Simulasi Sensitivitas & Evaluasi Portofolio",
+      "description": "Penyajian proyeksi harga H+1, analisis teknikal SMA/RSI, simulasi skenario makro (What-If), dan kalkulasi profit bersih sesuai regulasi pajak.",
+      "icon": "fa-chart-line",
+      "badge": "Interactive DSS"
+    }
+  ],
+  "methodology": {
+    "overview": "Support Vector Regression (SVR) merupakan adaptasi algoritma Support Vector Machine untuk kasus regresi kontinyu. Berbeda dengan regresi linier kuadrat terkecil (OLS) yang meminimalkan seluruh kuadrat residu, SVR membentuk tabung margin toleransi (ε) di sekitar fungsi estimasi sehingga model lebih tangguh terhadap fluktuasi ekstrem atau anomali harga komoditas.",
+    "kernel_title": "Keunggulan Kernel Radial Basis Function (RBF)",
+    "kernel_explanation": "Pergerakan harga emas dipengaruhi interaksi non-linier antara nilai tukar, inflasi energi, dan indeks dolar. Kernel RBF memproyeksikan fitur input ke ruang fitur berdimensi tinggi secara implisit sehingga batas regresi non-linier dapat dihitung secara presisi tanpa mengalami ledakan komputasi.",
+    "variables": [
+      {
+        "code": "X1",
+        "name": "Harga Emas Antam (H-1)",
+        "unit": "IDR / Gram",
+        "weight": "12.5%",
+        "role": "Basis referensi harga domestik hari sebelumnya untuk menangkap inersia dan tren harga lokal."
+      },
+      {
+        "code": "X2",
+        "name": "Emas Spot Global (XAU/USD)",
+        "unit": "USD / Troy Oz",
+        "weight": "35.0%",
+        "role": "Acuan harga komoditas emas di pasar berjangka internasional yang menjadi penggerak utama harga emas fisik."
+      },
+      {
+        "code": "X3",
+        "name": "Nilai Tukar USD/IDR",
+        "unit": "Rupiah per 1 USD",
+        "weight": "42.5%",
+        "role": "Faktor translasi valuta asing paling dominan; pelemahan Rupiah terhadap Dolar AS mendorong kenaikan harga emas lokal."
+      },
+      {
+        "code": "X4",
+        "name": "Indeks Dolar AS (DXY)",
+        "unit": "Indeks Poin",
+        "weight": "4.0%",
+        "role": "Mengukur kekuatan Dolar AS terhadap enam mata uang utama dunia; umumnya berkorelasi negatif dengan harga emas."
+      },
+      {
+        "code": "X5",
+        "name": "Minyak Mentah WTI",
+        "unit": "USD / Barel",
+        "weight": "6.0%",
+        "role": "Indikator tekanan biaya energi dan ekspektasi inflasi global yang memicu permintaan aset lindung nilai (safe haven)."
+      }
+    ]
+  },
+  "tax_regulation": {
+    "title": "Regulasi Pajak Buyback Emas (PMK No. 34/PMK.010/2017)",
+    "description": "Sesuai Peraturan Menteri Keuangan Republik Indonesia mengenai pemungutan Pajak Penghasilan Pasal 22 (PPh 22), transaksi penjualan kembali (buyback) emas batangan ke PT Antam Tbk dengan nilai transaksi di atas Rp 10.000.000 dikenakan potongan PPh 22 sebesar 1,5% bagi pemegang NPWP (atau 3% bagi non-NPWP). Kalkulator portofolio pada sistem ini menerapkan potongan otomatis 1,5% ketika nilai bruto melampaui ambang batas tersebut.",
+    "threshold_idr": 10000000,
+    "rate_npwp": "1,5%",
+    "rate_non_npwp": "3,0%"
+  },
+  "external_links": [
+    {
+      "title": "Portal Resmi Logam Mulia",
+      "subtitle": "Referensi harga jual & buyback harian PT Antam Tbk",
+      "url": "https://www.logammulia.com/id/harga-emas-hari-ini",
+      "icon": "fa-coins"
+    },
+    {
+      "title": "Bursa Komoditas Emas Dunia",
+      "subtitle": "Data pergerakan XAU/USD, DXY, dan WTI Crude Oil",
+      "url": "https://id.investing.com/commodities/gold",
+      "icon": "fa-globe"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Mengapa nilai R-Squared (R²) model mencapai 93,02%?",
+      "answer": "Kombinasi variabel harga emas global (XAU/USD), kurs USD/IDR, dan harga Antam H-1 memiliki korelasi fundamental yang sangat kuat terhadap pembentukan harga ritel emas Antam keesokan harinya."
+    },
+    {
+      "question": "Bagaimana cara menggunakan Simulator Skenario Sensitivitas?",
+      "answer": "Pada halaman Beranda, geser slider Kurs USD/IDR atau Harga Emas Dunia, lalu klik 'Jalankan Proyeksi SVR'. Sistem akan mengirim parameter tersebut ke model SVR dan menampilkan estimasi harga H+1 beserta sinyal teknikalnya."
+    },
+    {
+      "question": "Apakah data portofolio di Kalkulator Profit tersimpan di server?",
+      "answer": "Tidak. Seluruh daftar transaksi beli yang Anda masukkan disimpan secara lokal di peramban Anda (LocalStorage) demi menjaga privasi finansial pengguna."
+    }
+  ],
+  "search_index": [
+    {
+      "title": "Terminal Analitik & Proyeksi SVR",
+      "category": "Halaman Utama",
+      "description": "Ikhtisar harga pasar langsung, simulator skenario makroekonomi, dan proyeksi harga H+1.",
+      "url": "/",
+      "keywords": "beranda home prediksi simulasi proyeksi antam h+1 terminal"
+    },
+    {
+      "title": "Simulator Skenario Sensitivitas (What-If)",
+      "category": "Fitur Interaktif",
+      "description": "Uji dampak perubahan Kurs USD/IDR, XAU/USD, DXY, dan WTI terhadap harga emas besok.",
+      "url": "/#simulatorSection",
+      "keywords": "what-if simulator kurs usd idr xau dxy wti sensitivitas skenario"
+    },
+    {
+      "title": "Kalkulator Profit & Pajak PPh 22",
+      "category": "Fitur Finansial",
+      "description": "Hitung estimasi keuntungan bersih portofolio emas dengan potongan pajak buyback otomatis.",
+      "url": "/#calculatorSection",
+      "keywords": "kalkulator profit untung rugi buyback pajak pph 22 npwp portofolio"
+    },
+    {
+      "title": "Kalender & Sentimen Makroekonomi Global",
+      "category": "Fitur Pasar",
+      "description": "Jadwal rilis data ekonomi AS dan berita pasar komoditas langsung dari TradingView.",
+      "url": "/#macroSentimentSection",
+      "keywords": "kalender ekonomi berita sentimen tradingview fed inflasi"
+    },
+    {
+      "title": "Dasbor Analitik & Evaluasi Model",
+      "category": "Halaman Analitik",
+      "description": "Metrik validasi ilmiah (RMSE, MAE, R²), grafik tren historis SMA/RSI, dan bobot variabel.",
+      "url": "/dashboard",
+      "keywords": "dasbor dashboard analitik grafik rmse mae r2 akurasi validasi"
+    },
+    {
+      "title": "Grafik Tren Harga Historis, SMA 7/30 & RSI 14",
+      "category": "Visualisasi Data",
+      "description": "Analisis teknikal pergerakan harga emas 60 periode terakhir dengan indikator momentum.",
+      "url": "/dashboard#historicalChartSection",
+      "keywords": "grafik chart sma 7 sma 30 rsi 14 tren historis teknikal"
+    },
+    {
+      "title": "Distribusi Bobot & Sensitivitas Variabel",
+      "category": "Visualisasi Data",
+      "description": "Kontribusi Kurs USD/IDR (42.5%), Emas Global (35%), Antam H-1 (12.5%), WTI, dan DXY.",
+      "url": "/dashboard#variableImportanceSection",
+      "keywords": "bobot variabel korelasi kontribusi radar doughnut"
+    },
+    {
+      "title": "Log Data Historis & Ekspor CSV",
+      "category": "Data & Laporan",
+      "description": "Tabel catatan harga emas harian beserta sinyal SMA dan fitur unduh laporan CSV/PDF.",
+      "url": "/dashboard#historyTableSection",
+      "keywords": "tabel log data historis csv export unduh pdf laporan"
+    },
+    {
+      "title": "Tentang Sistem & Metodologi SVR",
+      "category": "Halaman Dokumentasi",
+      "description": "Penjelasan arsitektur pipeline data, landasan algoritma SVR Kernel RBF, dan profil peneliti.",
+      "url": "/tentang-sistem",
+      "keywords": "tentang sistem about metodologi svr kernel rbf skripsi ruben setiaji untar"
+    },
+    {
+      "title": "Regulasi Pajak Emas PMK No. 34/2017",
+      "category": "Dokumentasi Regulasi",
+      "description": "Aturan potongan PPh Pasal 22 sebesar 1,5% untuk buyback emas di atas Rp 10 juta.",
+      "url": "/tentang-sistem#taxRegulationSection",
+      "keywords": "regulasi pajak pmk 34 2017 pph 22 npwp buyback"
+    }
+  ]
+}
