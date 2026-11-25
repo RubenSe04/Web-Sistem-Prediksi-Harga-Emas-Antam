@@ -84,64 +84,56 @@
     </div>
 </section>
 
-<!-- FITUR 2: SIMULATOR WHAT-IF & EKSEKUSI -->
-<section class="surface-card mb-4" id="step2-predict" aria-labelledby="headingSimulator">
+<!-- FITUR 2 (TERPISAH): PREDIKSI UTAMA HARGA EMAS ANTAM (H+1) BERBASIS DATA AKTUAL -->
+<section class="surface-card mb-4" id="step2-predict" aria-labelledby="headingMainPredict" style="border-color: var(--border-gold-strong);">
     <div class="panel-header">
-        <h2 id="headingSimulator" class="panel-title">
-            <i class="fa-solid fa-flask-vial text-warning" aria-hidden="true"></i>
-            <span>Skenario Sensitivitas Pasar</span>
-        </h2>
+        <div>
+            <h2 id="headingMainPredict" class="panel-title">
+                <i class="fa-solid fa-microchip text-gold" aria-hidden="true"></i>
+                <span>Mesin Prediksi Harga Emas Antam (H+1)</span>
+            </h2>
+            <p class="panel-subtitle">Proyeksi otomatis harga jual dan buyback besok berdasarkan 5 variabel pasar live hari ini.</p>
+        </div>
+        <span class="status-badge status-badge-gold"><i class="fa-solid fa-brain"></i> SVR Kernel RBF</span>
     </div>
 
     <div class="row g-4 align-items-center">
-        <div class="col-lg-7">
-            <div class="mb-4">
-                <label class="form-label-custom" for="simKurs">
-                    <span>Kurs USD/IDR</span>
-                    <span class="form-value-badge">Rp <span id="valSimKurs">16.000</span></span>
-                </label>
-                <input type="range" class="range-gold" id="simKurs" min="14000" max="18000" step="50" value="16000">
-            </div>
-
-            <div class="mb-4">
-                <label class="form-label-custom" for="simGold">
-                    <span>Emas Dunia / XAU (USD/oz)</span>
-                    <span class="form-value-badge">$ <span id="valSimGold">2.300</span></span>
-                </label>
-                <input type="range" class="range-gold" id="simGold" min="1800" max="3000" step="10" value="2300">
-            </div>
-
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label-custom" for="simDxy">Indeks Dolar (DXY)</label>
-                    <input type="number" class="form-control input-dark" id="simDxy" value="104" step="0.1">
+        <div class="col-lg-5">
+            <div class="p-4 rounded-3" style="background-color: var(--bg-input); border: 1px solid var(--border-subtle);">
+                <div class="text-muted small mb-2">Input Otomatis Model (Data Live H+0):</div>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="status-badge status-badge-gold">Antam H-1</span>
+                    <span class="status-badge status-badge-gold">Spot XAU/USD</span>
+                    <span class="status-badge status-badge-gold">Kurs USD/IDR</span>
+                    <span class="status-badge status-badge-gold">Indeks DXY</span>
+                    <span class="status-badge status-badge-gold">Minyak WTI</span>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label-custom" for="simWti">Minyak WTI (USD)</label>
-                    <input type="number" class="form-control input-dark" id="simWti" value="80" step="1">
-                </div>
+                <p class="text-muted small mb-3" style="line-height: 1.55;">
+                    Klik tombol di bawah untuk mengeksekusi model SVR menggunakan data fundamental aktual saat ini tanpa mengubah skenario manual.
+                </p>
+                <button type="button" id="btnPredictMain" class="btn-gold-primary w-100">
+                    <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+                    <span>Prediksi Harga Emas Besok (H+1)</span>
+                </button>
             </div>
-
-            <button type="button" id="btnRunSim" class="btn-gold-primary mt-4 w-100">
-                <i class="fa-solid fa-microchip" aria-hidden="true"></i>
-                <span>Eksekusi Prediksi AI SVR (H+1)</span>
-            </button>
         </div>
 
-        <div class="col-lg-5">
-            <div id="simResultBox" class="prediction-display-box" aria-live="polite">
-                <span class="prediction-eyebrow">Proyeksi AI SVR</span>
-
-                <div id="simLoading" class="my-4 d-none">
-                    <div class="spinner-grow text-warning" role="status" style="width: 2.8rem; height: 2.8rem;"></div>
-                    <div class="mt-2 text-muted small">MENGKALKULASI POIN DATA...</div>
+        <div class="col-lg-7">
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <div class="prediction-display-box p-4">
+                        <span class="prediction-eyebrow">Estimasi Harga Jual (H+1)</span>
+                        <div id="mainPredSell" class="prediction-price-main" style="font-size: 1.85rem;">Rp -</div>
+                        <div class="prediction-divider"></div>
+                        <div class="text-muted small mt-2">Aktual Hari Ini: <strong class="text-white" id="mainTodaySell">-</strong></div>
+                    </div>
                 </div>
-
-                <div id="simActualResult" class="w-100">
-                    <div id="simResultValue" class="prediction-price-main">Rp -</div>
-                    <div class="prediction-divider"></div>
-                    <div id="simComparison" class="text-muted mt-3 small">
-                        Tentukan skenario variabel makro di samping dan jalankan prediksi.
+                <div class="col-sm-6">
+                    <div class="prediction-display-box p-4" style="border-color: var(--border-subtle);">
+                        <span class="prediction-eyebrow">Estimasi Buyback (H+1)</span>
+                        <div id="mainPredBuyback" class="prediction-price-main text-white" style="font-size: 1.85rem;">Rp -</div>
+                        <div class="prediction-divider"></div>
+                        <div class="text-muted small mt-2">Buyback Hari Ini: <strong class="text-white" id="mainTodayBuyback">-</strong></div>
                     </div>
                 </div>
             </div>
@@ -149,7 +141,7 @@
     </div>
 </section>
 
-<!-- EXECUTIVE AI SUMMARY (Muncul setelah hitung) -->
+<!-- EXECUTIVE AI SUMMARY (Muncul setelah prediksi) -->
 <section id="aiSummaryBox" class="outlook-banner mb-4 d-none" aria-live="polite" aria-labelledby="headingOutlook">
     <div class="d-flex align-items-start gap-3">
         <i class="fa-solid fa-bullhorn fs-4 text-gold mt-1" aria-hidden="true"></i>
@@ -160,7 +152,7 @@
     </div>
 </section>
 
-<!-- AREA GRAFIK HASIL & KALKULATOR -->
+<!-- AREA GRAFIK HASIL PREDIKSI & KALKULATOR PROFIT -->
 <div class="row g-4 mb-4" id="resultContainer" style="display: none;">
     <div class="col-lg-7">
         <section class="surface-card h-100 d-flex flex-column" id="step3-chart" aria-labelledby="headingProjReport">
@@ -248,6 +240,75 @@
         </section>
     </div>
 </div>
+
+<!-- FITUR 3 (TERPISAH): SIMULATOR WHAT-IF (SKENARIO SENSITIVITAS PASAR) -->
+<section class="surface-card mb-4" id="simulatorSection" aria-labelledby="headingSimulator">
+    <div class="panel-header">
+        <div>
+            <h2 id="headingSimulator" class="panel-title">
+                <i class="fa-solid fa-flask-vial text-warning" aria-hidden="true"></i>
+                <span>What-If Simulator (Skenario Sensitivitas Pasar)</span>
+            </h2>
+            <p class="panel-subtitle">Eksperimen mandiri: ubah nilai Kurs, Emas Dunia, DXY, atau WTI untuk mensimulasikan dampaknya terhadap harga emas.</p>
+        </div>
+        <span class="status-badge status-badge-gold"><i class="fa-solid fa-sliders"></i> Mode Eksperimen</span>
+    </div>
+
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-7">
+            <div class="mb-4">
+                <label class="form-label-custom" for="simKurs">
+                    <span>Simulasi Kurs USD/IDR</span>
+                    <span class="form-value-badge">Rp <span id="valSimKurs">16.000</span></span>
+                </label>
+                <input type="range" class="range-gold" id="simKurs" min="14000" max="18000" step="50" value="16000">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label-custom" for="simGold">
+                    <span>Simulasi Emas Dunia / XAU (USD/oz)</span>
+                    <span class="form-value-badge">$ <span id="valSimGold">2.300</span></span>
+                </label>
+                <input type="range" class="range-gold" id="simGold" min="1800" max="3000" step="10" value="2300">
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label-custom" for="simDxy">Simulasi Indeks Dolar (DXY)</label>
+                    <input type="number" class="form-control input-dark" id="simDxy" value="104" step="0.1">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label-custom" for="simWti">Simulasi Minyak WTI (USD)</label>
+                    <input type="number" class="form-control input-dark" id="simWti" value="80" step="1">
+                </div>
+            </div>
+
+            <button type="button" id="btnRunSim" class="btn-action w-100 mt-4" style="height: 44px; font-size: 0.95rem;">
+                <i class="fa-solid fa-flask" aria-hidden="true"></i>
+                <span>Uji Skenario What-If</span>
+            </button>
+        </div>
+
+        <div class="col-lg-5">
+            <div id="simResultBox" class="prediction-display-box" aria-live="polite">
+                <span class="prediction-eyebrow">Hasil Simulasi What-If</span>
+
+                <div id="simLoading" class="my-4 d-none">
+                    <div class="spinner-grow text-warning" role="status" style="width: 2.5rem; height: 2.5rem;"></div>
+                    <div class="mt-2 text-muted small">MENGHITUNG SKENARIO...</div>
+                </div>
+
+                <div id="simActualResult" class="w-100">
+                    <div id="simResultValue" class="prediction-price-main">Rp -</div>
+                    <div class="prediction-divider"></div>
+                    <div id="simComparison" class="text-muted mt-3 small">
+                        Geser slider variabel makro di samping dan klik "Uji Skenario What-If" untuk melihat dampak perubahan harga.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- WIDGET KALENDER EKONOMI -->
 <section class="surface-card mb-4" id="step5-news" aria-labelledby="headingMacroNews">

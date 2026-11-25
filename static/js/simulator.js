@@ -1,5 +1,6 @@
 /**
- * HOME TERMINAL MODULE — SIMULATOR SVR, KALKULATOR PROFIT, & HASIL PROYEKSI
+ * HOME TERMINAL MODULE — PREDIKSI UTAMA SVR (/predict), WHAT-IF SIMULATOR (/api/simulate), & KALKULATOR PROFIT
+ * Memisahkan secara tegas fitur Prediksi Harga Emas Aktual (H+1) dengan fitur What-If Simulation.
  */
 
 (function () {
@@ -26,18 +27,23 @@
                 steps: [
                     {
                         element: document.querySelector('#step1-market'),
-                        title: '1. Data Pasar Real-time',
+                        title: '1. Data Pasar Real-Time',
                         intro: 'Fundamental terkini dari Yahoo Finance (XAU, Kurs, DXY, WTI) dan Emas Antam.'
                     },
                     {
                         element: document.querySelector('#step2-predict'),
-                        title: '2. Mesin AI (SVR)',
-                        intro: 'Atur sensitivitas dan eksekusi algoritma SVR untuk melihat proyeksi harga besok (H+1).'
+                        title: '2. Mesin Prediksi Harga Emas (H+1)',
+                        intro: 'Eksekusi prediksi resmi SVR menggunakan data pasar aktual hari ini untuk melihat harga jual dan buyback besok.'
+                    },
+                    {
+                        element: document.querySelector('#simulatorSection'),
+                        title: '3. What-If Simulator',
+                        intro: 'Fitur eksperimen terpisah untuk menguji skenario perubahan Kurs USD/IDR, XAU, DXY, dan WTI secara manual.'
                     },
                     {
                         element: document.querySelector('#step5-news'),
-                        title: '3. Radar Global',
-                        intro: 'Kalender ekonomi dan sentimen berita yang menggerakkan volatilitas emas.'
+                        title: '4. Sentimen Makroekonomi',
+                        intro: 'Kalender ekonomi dan berita pasar global yang menggerakkan volatilitas emas.'
                     }
                 ],
                 showProgress: true,
@@ -284,6 +290,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        const btnPredictMain = document.getElementById('btnPredictMain');
         const simKurs = document.getElementById('simKurs');
         const simGold = document.getElementById('simGold');
         const btnRunSim = document.getElementById('btnRunSim');
@@ -306,6 +313,11 @@
             const parsedBuyback = parseInt(String(d.buyback).replace(/[^0-9]/g, ''), 10);
             if (!isNaN(parsedAntam) && parsedAntam > 0) currentAntamPrice = parsedAntam;
             if (!isNaN(parsedBuyback) && parsedBuyback > 0) currentBuybackPrice = parsedBuyback;
+
+            const todaySellEl = document.getElementById('mainTodaySell');
+            const todayBuybackEl = document.getElementById('mainTodayBuyback');
+            if (todaySellEl) todaySellEl.textContent = d.antam;
+            if (todayBuybackEl) todayBuybackEl.textContent = d.buyback;
         });
 
         fetch('/api/chart_data')
@@ -335,16 +347,76 @@
                 }
             });
 
+        // A. FITUR 1: PREDIKSI HARGA EMAS UTAMA (ENDPOINT /predict)
+        if (btnPredictMain) {
+            btnPredictMain.addEventListener('click', function () {
+                const btn = this;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm text-dark"></span> Memproses Prediksi SVR...';
+                btn.disabled = true;
+
+                fetch('/predict', { method: 'POST' })
+                    .then((r) => r.json())
+                    .then((data) => {
+                        if (data.status === 'success') {
+                            document.getElementById('mainPredSell').textContent = data.pred_sell_besok;
+                            document.getElementById('mainPredBuyback').textContent = data.pred_buyback_besok;
+                            document.getElementById('mainTodaySell').textContent = data.sell_today;
+                            document.getElementById('mainTodayBuyback').textContent = data.buyback_today;
+
+                            const rawSellBesok = parseInt(String(data.pred_sell_besok).replace(/[^0-9]/g, ''), 10);
+                            const rawBuybackBesok = parseInt(String(data.pred_buyback_besok).replace(/[^0-9]/g, ''), 10);
+                            const rawSellToday = parseInt(String(data.sell_today).replace(/[^0-9]/g, ''), 10) || currentAntamPrice;
+                            const rawBuybackToday = data.raw_buyback_today || currentBuybackPrice;
+
+                            const selisih = rawSellBesok - rawSellToday;
+                            const arah =
+                                selisih > 0
+                                    ? 'mengalami penguatan (NAIK)'
+                                    : selisih < 0
+                                    ? 'mengalami koreksi (TURUN)'
+                                    : 'cenderung STABIL';
+                            const rekomendasi =
+                                selisih > 8000
+                                    ? 'BUY (Akumulasi Aset)'
+                                    : selisih < -8000
+                                    ? 'SELL (Amankan Margin)'
+                                    : 'HOLD (Wait & See)';
+
+                            const narasi = `<strong>Market Outlook (Data Aktual):</strong> Berdasarkan indikator pasar live hari ini, harga Emas Antam esok hari (H+1) diproyeksikan berada di level <strong>${data.pred_sell_besok}</strong> (Buyback: <strong>${data.pred_buyback_besok}</strong>) atau <strong>${arah}</strong> sekitar Rp ${Math.abs(selisih).toLocaleString('id-ID')} per gram. Rekomendasi teknikal model: <strong class="text-gold" style="text-decoration: underline;">${rekomendasi}</strong>.`;
+
+                            document.getElementById('aiSummaryText').innerHTML = narasi;
+                            document.getElementById('aiSummaryBox').classList.remove('d-none');
+                            document.getElementById('resultContainer').style.display = 'flex';
+
+                            document.getElementById('sellToday').textContent = data.sell_today;
+                            document.getElementById('sellBesok').textContent = data.pred_sell_besok;
+                            document.getElementById('calcHargaJual').value = rawBuybackToday;
+
+                            renderChart(rawSellToday, rawBuybackToday, rawSellBesok, rawBuybackBesok);
+                            renderGauge(rawSellToday, rawSellBesok);
+                            renderPolar(rawSellToday, rawSellBesok);
+
+                            if (window.AppUI) window.AppUI.showToast('Prediksi Harga Emas H+1 Selesai');
+                        }
+                    })
+                    .finally(() => {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    });
+            });
+        }
+
+        // B. FITUR 2 (TERPISAH): WHAT-IF SIMULATOR (ENDPOINT /api/simulate)
         if (btnRunSim) {
             btnRunSim.addEventListener('click', function () {
                 const btn = this;
                 const originalText = btn.innerHTML;
-                btn.innerHTML = '<span class="spinner-border spinner-border-sm text-dark"></span> Kalkulasi AI SVR...';
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Menghitung Skenario What-If...';
                 btn.disabled = true;
 
                 document.getElementById('simActualResult').classList.add('d-none');
                 document.getElementById('simLoading').classList.remove('d-none');
-                document.getElementById('aiSummaryBox').classList.add('d-none');
 
                 fetch('/api/simulate', {
                     method: 'POST',
@@ -366,33 +438,20 @@
                             const rawResult = parseInt(data.formatted.replace(/[^0-9]/g, ''), 10);
                             const currentGold = currentAntamPrice || 2598000;
                             const selisih = rawResult - currentGold;
-                            const arah =
-                                selisih > 0
-                                    ? 'mengalami penguatan (NAIK)'
-                                    : selisih < 0
-                                    ? 'mengalami koreksi (TURUN)'
-                                    : 'cenderung STABIL';
-                            const rekomendasi =
-                                selisih > 8000
-                                    ? 'BUY (Akumulasi Aset)'
-                                    : selisih < -8000
-                                    ? 'SELL (Amankan Margin)'
-                                    : 'HOLD (Wait & See)';
+                            const badgeClass = selisih >= 0 ? 'status-badge-success' : 'status-badge-danger';
+                            const sign = selisih >= 0 ? '+' : '-';
 
-                            const narasi = `<strong>Market Outlook:</strong> Jika Indeks Dolar AS (DXY) bertahan di level ${document.getElementById('simDxy').value} dan sentimen global kondusif, momentum Emas Antam esok hari diproyeksikan <strong>${arah}</strong> sekitar Rp ${Math.abs(selisih).toLocaleString('id-ID')} per gram. <br>Berdasarkan kalkulasi volatilitas, rekomendasi teknikal model adalah: <strong class="text-gold" style="text-decoration: underline;">${rekomendasi}</strong>.`;
-
-                            document.getElementById('aiSummaryText').innerHTML = narasi;
-                            document.getElementById('aiSummaryBox').classList.remove('d-none');
-                            document.getElementById('resultContainer').style.display = 'flex';
-
-                            document.getElementById('sellToday').textContent = formatRupiah(currentGold);
-                            document.getElementById('sellBesok').textContent = data.formatted;
-                            document.getElementById('calcHargaJual').value = currentBuybackPrice || currentGold - 160000;
-
-                            renderChart(currentGold, currentBuybackPrice, rawResult, rawResult - 160000);
-                            renderGauge(currentGold, rawResult);
-                            renderPolar(currentGold, rawResult);
-                            document.getElementById('aiSummaryBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            document.getElementById('simComparison').innerHTML = `
+                                <div class="mb-2">
+                                    <span class="status-badge ${badgeClass}">
+                                        Selisih vs Harga Hari Ini: ${sign}${formatRupiah(Math.abs(selisih))}
+                                    </span>
+                                </div>
+                                <div class="text-muted small">
+                                    Skenario: Kurs Rp ${parseInt(simKurs.value, 10).toLocaleString('id-ID')} | XAU $${parseInt(simGold.value, 10).toLocaleString('id-ID')} | DXY ${document.getElementById('simDxy').value} | WTI $${document.getElementById('simWti').value}
+                                </div>
+                            `;
+                            if (window.AppUI) window.AppUI.showToast('Simulasi What-If Diperbarui');
                         }
                     })
                     .finally(() => {
@@ -402,6 +461,7 @@
             });
         }
 
+        // C. FITUR 3: KALKULATOR PROFIT
         if (btnHitung) {
             btnHitung.addEventListener('click', function () {
                 const pInputs = document.querySelectorAll('.price-input');
