@@ -1,12 +1,12 @@
 /**
- * NAVIGATION, TOAST, & GLOBAL MARKET TICKER MODULE
- * Mengelola drawer mobile, aksesibilitas keyboard (Esc), toast notification, dan sinkronisasi ticker.
+ * NAVIGATION, TOAST, & RUNNING MARKET TICKER MODULE
+ * Menghidupkan kembali animasi berjalan (Running Ticker) 6 status variabel makro & emas Antam.
  */
 
 window.AppUI = (function () {
     let toastTimer = null;
 
-    function showToast(message, iconClass = 'fa-circle-check') {
+    function showToast(message, iconClass = 'fa-check-circle') {
         const toastEl = document.getElementById('globalToast');
         const toastMsg = document.getElementById('globalToastMsg');
         const toastIcon = document.getElementById('globalToastIcon');
@@ -14,14 +14,14 @@ window.AppUI = (function () {
 
         toastMsg.textContent = message;
         if (toastIcon) {
-            toastIcon.className = `fa-solid ${iconClass} text-gold`;
+            toastIcon.className = `fa-solid ${iconClass}`;
         }
 
         toastEl.classList.add('show');
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => {
             toastEl.classList.remove('show');
-        }, 2400);
+        }, 1800);
     }
 
     function initSidebarDrawer() {
@@ -75,16 +75,15 @@ window.AppUI = (function () {
 
                 if (tickerEl) {
                     tickerEl.innerHTML = `
-                        <span class="ticker-node"><i class="fa-solid fa-coins text-gold" aria-hidden="true"></i> Antam Jual (1g): <strong>${data.antam}</strong></span>
-                        <span class="ticker-node"><i class="fa-solid fa-hand-holding-dollar text-gold" aria-hidden="true"></i> Buyback: <strong>${data.buyback}</strong></span>
-                        <span class="ticker-node"><i class="fa-solid fa-globe text-gold" aria-hidden="true"></i> Spot XAU/USD: <strong style="color: var(--status-success);">${data.global_gold}</strong></span>
-                        <span class="ticker-node"><i class="fa-solid fa-money-bill-transfer text-gold" aria-hidden="true"></i> USD/IDR: <strong>${data.usd_idr}</strong></span>
-                        <span class="ticker-node"><i class="fa-solid fa-chart-line text-gold" aria-hidden="true"></i> Indeks DXY: <strong>${data.dxy}</strong></span>
-                        <span class="ticker-node"><i class="fa-solid fa-droplet text-gold" aria-hidden="true"></i> Minyak WTI: <strong>${data.wti}</strong></span>
+                        <span class="ticker-item"><i class="fa-solid fa-coins text-gold"></i> ANTAM JUAL: <span class="ticker-value text-white">${data.antam}</span></span>
+                        <span class="ticker-item"><i class="fa-solid fa-hand-holding-dollar text-gold"></i> ANTAM BUYBACK: <span class="ticker-value text-white">${data.buyback}</span></span>
+                        <span class="ticker-item"><i class="fa-solid fa-globe text-gold"></i> GLOBAL XAU/USD: <span class="ticker-value" style="color: #10B981;">${data.global_gold}</span></span>
+                        <span class="ticker-item"><i class="fa-solid fa-money-bill-transfer text-gold"></i> KURS USD/IDR: <span class="ticker-value" style="color: #EF4444;">${data.usd_idr}</span></span>
+                        <span class="ticker-item"><i class="fa-solid fa-chart-line text-gold"></i> INDEKS DXY: <span class="ticker-value text-white">${data.dxy}</span></span>
+                        <span class="ticker-item"><i class="fa-solid fa-droplet text-gold"></i> MINYAK WTI: <span class="ticker-value text-white">${data.wti}</span></span>
                     `;
                 }
 
-                // Isi kartu KPI di halaman Beranda jika ada
                 const mapIds = {
                     liveAntam: data.antam,
                     liveBuyback: data.buyback,
@@ -95,14 +94,19 @@ window.AppUI = (function () {
                 };
                 Object.keys(mapIds).forEach((id) => {
                     const el = document.getElementById(id);
-                    if (el) el.textContent = mapIds[id];
+                    if (el) {
+                        el.textContent = mapIds[id];
+                        el.classList.remove('value-updated');
+                        void el.offsetWidth;
+                        el.classList.add('value-updated');
+                    }
                 });
 
                 document.dispatchEvent(new CustomEvent('marketStatusLoaded', { detail: data }));
             })
             .catch(() => {
                 if (tickerEl) {
-                    tickerEl.innerHTML = `<span class="ticker-node">Data pasar menggunakan mode sinkronisasi cadangan.</span>`;
+                    tickerEl.innerHTML = `<span class="ticker-item">Memuat Sinkronisasi Pasar...</span>`;
                 }
             });
     }

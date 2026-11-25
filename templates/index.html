@@ -1,183 +1,147 @@
 {% extends 'base.html' %}
-{% set breadcrumb_title = 'Terminal Proyeksi SVR' %}
+{% set breadcrumb_title = 'Terminal Analitik SVR' %}
 
-{% block title %}Terminal Proyeksi SVR | Sistem Prediksi Harga Emas Antam{% endblock %}
-{% block meta_description %}Terminal proyeksi harga emas batangan PT Antam Tbk (H+1), simulator sensitivitas makroekonomi (Kurs USD/IDR, XAU/USD, DXY, WTI), dan kalkulator profit pajak PPh 22.{% endblock %}
+{% block title %}Prediksi Emas Antam | AI SVR{% endblock %}
+{% block meta_description %}Platform proyeksi dan simulasi investasi Emas Antam (H+1) dengan algoritma Support Vector Regression (SVR) dan kalkulator profit.{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/introjs.min.css">
 {% endblock %}
 
 {% block content %}
-<!-- HEADER HALAMAN UTAMA (TEPAT SATU H1) -->
 <div class="page-header">
     <div>
-        <h1 class="page-title">Terminal Proyeksi Harga Emas SVR</h1>
-        <p class="page-subtitle">Sistem Pendukung Keputusan investasi emas batangan PT Antam Tbk berbasis indikator makroekonomi (H+1).</p>
+        <h1 class="page-title">Terminal Analitik SVR</h1>
+        <p class="page-subtitle">Platform proyeksi dan simulasi investasi Emas Antam (H+1).</p>
     </div>
     <div class="page-actions">
-        <button type="button" onclick="startTour()" class="btn-action" aria-label="Mulai panduan penggunaan interaktif">
-            <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
-            <span>Panduan Fitur</span>
+        <button type="button" onclick="startTour()" class="btn-action" aria-label="Mulai panduan interaktif">
+            <i class="fa-solid fa-play" aria-hidden="true"></i>
+            <span>Mulai Panduan</span>
         </button>
-        <a href="{{ url_for('dashboard') }}" class="btn-action">
-            <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
-            <span>Lihat Evaluasi Model</span>
-        </a>
     </div>
 </div>
 
-<!-- SEKSI 1: LIVE MARKET KPI ROW (EXECUTIVE DASHBOARD STYLE) -->
-<section id="marketOverviewSection" class="mb-4" aria-labelledby="headingMarketOverview">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 id="headingMarketOverview" class="panel-title">
-            <i class="fa-solid fa-signal text-gold me-2" aria-hidden="true"></i>Indikator Pasar &amp; Fundamental Langsung
+<!-- FITUR 1: LIVE MARKET OVERVIEW (6 KARTU VARIABEL ANIMASI) -->
+<section class="surface-card mb-4" id="step1-market" aria-labelledby="headingLiveMarket">
+    <div class="panel-header">
+        <h2 id="headingLiveMarket" class="panel-title">
+            <i class="fa-solid fa-bolt text-warning" aria-hidden="true"></i>
+            <span>Live Market Overview</span>
         </h2>
-        <span class="status-badge status-badge-gold">
-            <i class="fa-solid fa-bolt" aria-hidden="true"></i> Data Acuan H+0
-        </span>
+        <span class="status-badge status-badge-gold"><i class="fa-solid fa-satellite-dish"></i> Real-Time Sync</span>
     </div>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xxl-6 g-3">
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
         <div class="col">
-            <article class="kpi-card">
-                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-coins"></i></div>
-                <div class="kpi-content">
-                    <p class="kpi-label">Emas Antam (Jual)</p>
-                    <h3 id="liveAntam" class="kpi-value"><span class="skeleton-line"></span></h3>
-                    <span class="kpi-meta">Harga Ritel 1 Gram</span>
-                </div>
+            <article class="market-var-card">
+                <div class="kpi-icon-circle mb-2" aria-hidden="true"><i class="fa-solid fa-cubes-stacked"></i></div>
+                <p class="kpi-label">Emas (Jual)</p>
+                <h3 id="liveAntam" class="market-var-value"><span class="skeleton-line"></span></h3>
+                <span class="kpi-meta">Antam 1 gr</span>
             </article>
         </div>
         <div class="col">
-            <article class="kpi-card">
-                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                <div class="kpi-content">
-                    <p class="kpi-label">Harga Buyback</p>
-                    <h3 id="liveBuyback" class="kpi-value"><span class="skeleton-line"></span></h3>
-                    <span class="kpi-meta">Beli Kembali 1 Gram</span>
-                </div>
+            <article class="market-var-card">
+                <div class="kpi-icon-circle mb-2" aria-hidden="true"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                <p class="kpi-label">Buyback</p>
+                <h3 id="liveBuyback" class="market-var-value"><span class="skeleton-line"></span></h3>
+                <span class="kpi-meta">Antam 1 gr</span>
             </article>
         </div>
         <div class="col">
-            <article class="kpi-card">
-                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-globe"></i></div>
-                <div class="kpi-content">
-                    <p class="kpi-label">Emas Spot (XAU)</p>
-                    <h3 id="liveGlobal" class="kpi-value"><span class="skeleton-line"></span></h3>
-                    <span class="kpi-meta">USD / Troy Ounce</span>
-                </div>
+            <article class="market-var-card">
+                <div class="kpi-icon-circle mb-2" aria-hidden="true"><i class="fa-solid fa-globe"></i></div>
+                <p class="kpi-label">Emas Global</p>
+                <h3 id="liveGlobal" class="market-var-value"><span class="skeleton-line"></span></h3>
+                <span class="kpi-meta">USD/Troy Oz</span>
             </article>
         </div>
         <div class="col">
-            <article class="kpi-card">
-                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-money-bill-transfer"></i></div>
-                <div class="kpi-content">
-                    <p class="kpi-label">Kurs USD / IDR</p>
-                    <h3 id="liveKurs" class="kpi-value"><span class="skeleton-line"></span></h3>
-                    <span class="kpi-meta">Nilai Tukar Spot</span>
-                </div>
+            <article class="market-var-card">
+                <div class="kpi-icon-circle mb-2" aria-hidden="true"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                <p class="kpi-label">Kurs USD/IDR</p>
+                <h3 id="liveKurs" class="market-var-value"><span class="skeleton-line"></span></h3>
+                <span class="kpi-meta">Rupiah</span>
             </article>
         </div>
         <div class="col">
-            <article class="kpi-card">
-                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-chart-Simple"></i></div>
-                <div class="kpi-content">
-                    <p class="kpi-label">Indeks Dolar (DXY)</p>
-                    <h3 id="liveDxy" class="kpi-value"><span class="skeleton-line"></span></h3>
-                    <span class="kpi-meta">Kekuatan USD Global</span>
-                </div>
+            <article class="market-var-card">
+                <div class="kpi-icon-circle mb-2" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></div>
+                <p class="kpi-label">Indeks Dolar</p>
+                <h3 id="liveDxy" class="market-var-value"><span class="skeleton-line"></span></h3>
+                <span class="kpi-meta">Poin (DXY)</span>
             </article>
         </div>
         <div class="col">
-            <article class="kpi-card">
-                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-droplet"></i></div>
-                <div class="kpi-content">
-                    <p class="kpi-label">Minyak Mentah WTI</p>
-                    <h3 id="liveWti" class="kpi-value"><span class="skeleton-line"></span></h3>
-                    <span class="kpi-meta">USD / Barel</span>
-                </div>
+            <article class="market-var-card">
+                <div class="kpi-icon-circle mb-2" aria-hidden="true"><i class="fa-solid fa-droplet"></i></div>
+                <p class="kpi-label">Minyak WTI</p>
+                <h3 id="liveWti" class="market-var-value"><span class="skeleton-line"></span></h3>
+                <span class="kpi-meta">USD/Barel</span>
             </article>
         </div>
     </div>
 </section>
 
-<!-- SEKSI 2: SIMULATOR SENSITIVITAS PASAR (WHAT-IF) -->
-<section id="simulatorSection" class="surface-card surface-card-highlight mb-4" aria-labelledby="headingSimulator">
+<!-- FITUR 2: SIMULATOR WHAT-IF & EKSEKUSI -->
+<section class="surface-card mb-4" id="step2-predict" aria-labelledby="headingSimulator">
     <div class="panel-header">
-        <div class="panel-title-group">
-            <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-sliders"></i></span>
-            <div>
-                <h2 id="headingSimulator" class="panel-title">Simulator Skenario Sensitivitas Pasar (What-If Analysis)</h2>
-                <p class="panel-subtitle">Sesuaikan variabel makroekonomi untuk menguji proyeksi harga emas Antam esok hari (H+1).</p>
-            </div>
-        </div>
-        <span class="status-badge status-badge-gold">Model: SVR Kernel RBF</span>
+        <h2 id="headingSimulator" class="panel-title">
+            <i class="fa-solid fa-flask-vial text-warning" aria-hidden="true"></i>
+            <span>Skenario Sensitivitas Pasar</span>
+        </h2>
     </div>
 
-    <div class="row g-4 align-items-stretch">
+    <div class="row g-4 align-items-center">
         <div class="col-lg-7">
             <div class="mb-4">
                 <label class="form-label-custom" for="simKurs">
-                    <span>Nilai Tukar Kurs USD / IDR (Bobot 42,5%)</span>
-                    <span class="form-value-badge" id="valSimKurs">Rp 16.300</span>
+                    <span>Kurs USD/IDR</span>
+                    <span class="form-value-badge">Rp <span id="valSimKurs">16.000</span></span>
                 </label>
-                <input type="range" class="range-gold" id="simKurs" min="14000" max="18000" step="50" value="16300">
-                <div class="range-limits">
-                    <span>Rp 14.000 (Rupiah Menguat)</span>
-                    <span>Rp 18.000 (Rupiah Melemah)</span>
-                </div>
+                <input type="range" class="range-gold" id="simKurs" min="14000" max="18000" step="50" value="16000">
             </div>
 
             <div class="mb-4">
                 <label class="form-label-custom" for="simGold">
-                    <span>Harga Emas Dunia / XAU (Bobot 35,0%)</span>
-                    <span class="form-value-badge" id="valSimGold">$ 2.700</span>
+                    <span>Emas Dunia / XAU (USD/oz)</span>
+                    <span class="form-value-badge">$ <span id="valSimGold">2.300</span></span>
                 </label>
-                <input type="range" class="range-gold" id="simGold" min="1800" max="3200" step="10" value="2700">
-                <div class="range-limits">
-                    <span>$ 1.800 / Troy Oz</span>
-                    <span>$ 3.200 / Troy Oz</span>
+                <input type="range" class="range-gold" id="simGold" min="1800" max="3000" step="10" value="2300">
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label-custom" for="simDxy">Indeks Dolar (DXY)</label>
+                    <input type="number" class="form-control input-dark" id="simDxy" value="104" step="0.1">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label-custom" for="simWti">Minyak WTI (USD)</label>
+                    <input type="number" class="form-control input-dark" id="simWti" value="80" step="1">
                 </div>
             </div>
 
-            <div class="row g-3 mb-4">
-                <div class="col-sm-6">
-                    <label class="form-label-custom" for="simDxy">
-                        <span>Indeks Dolar AS (DXY)</span>
-                    </label>
-                    <input type="number" class="form-control input-dark" id="simDxy" value="104.5" step="0.1" min="80" max="130">
-                </div>
-                <div class="col-sm-6">
-                    <label class="form-label-custom" for="simWti">
-                        <span>Minyak Mentah WTI (USD/Barel)</span>
-                    </label>
-                    <input type="number" class="form-control input-dark" id="simWti" value="75" step="1" min="30" max="160">
-                </div>
-            </div>
-
-            <button type="button" id="btnRunSim" class="btn-gold-primary w-100">
+            <button type="button" id="btnRunSim" class="btn-gold-primary mt-4 w-100">
                 <i class="fa-solid fa-microchip" aria-hidden="true"></i>
-                <span>Jalankan Proyeksi SVR (H+1)</span>
+                <span>Eksekusi Prediksi AI SVR (H+1)</span>
             </button>
         </div>
 
         <div class="col-lg-5">
             <div id="simResultBox" class="prediction-display-box" aria-live="polite">
-                <span class="prediction-eyebrow">Estimasi Harga Jual Antam (H+1)</span>
+                <span class="prediction-eyebrow">Proyeksi AI SVR</span>
 
                 <div id="simLoading" class="my-4 d-none">
-                    <div class="spinner-border text-gold" role="status" style="width: 2.5rem; height: 2.5rem;">
-                        <span class="visually-hidden">Menghitung...</span>
-                    </div>
-                    <div class="mt-3 text-secondary-light small fw-semibold">Memproses matriks fitur SVR...</div>
+                    <div class="spinner-grow text-warning" role="status" style="width: 2.8rem; height: 2.8rem;"></div>
+                    <div class="mt-2 text-muted small">MENGKALKULASI POIN DATA...</div>
                 </div>
 
                 <div id="simActualResult" class="w-100">
-                    <div id="simResultValue" class="prediction-price-main"><span class="skeleton-line" style="width: 210px;"></span></div>
+                    <div id="simResultValue" class="prediction-price-main">Rp -</div>
                     <div class="prediction-divider"></div>
-                    <div id="simComparison" class="mt-3 text-secondary-light small">
-                        Menampilkan proyeksi baseline pasar hari ini. Ubah parameter di samping dan klik tombol proyeksi untuk menguji skenario baru.
+                    <div id="simComparison" class="text-muted mt-3 small">
+                        Tentukan skenario variabel makro di samping dan jalankan prediksi.
                     </div>
                 </div>
             </div>
@@ -185,142 +149,99 @@
     </div>
 </section>
 
-<!-- BANNER RINGKASAN EKSEKUTIF (MUNCUL SAAT SIMULASI DIJALANKAN) -->
+<!-- EXECUTIVE AI SUMMARY (Muncul setelah hitung) -->
 <section id="aiSummaryBox" class="outlook-banner mb-4 d-none" aria-live="polite" aria-labelledby="headingOutlook">
     <div class="d-flex align-items-start gap-3">
-        <div class="panel-icon mt-1" aria-hidden="true"><i class="fa-solid fa-compass"></i></div>
+        <i class="fa-solid fa-bullhorn fs-4 text-gold mt-1" aria-hidden="true"></i>
         <div>
-            <h2 id="headingOutlook" class="panel-title text-gold mb-1">Analisis Keputusan &amp; Proyeksi Pasar (DSS Outlook)</h2>
-            <p id="aiSummaryText" class="mb-0 text-secondary-light" style="line-height: 1.65;"></p>
+            <h2 id="headingOutlook" class="panel-title text-gold mb-1">Market Outlook SVR</h2>
+            <p id="aiSummaryText" class="mb-0 text-muted small" style="line-height: 1.6;"></p>
         </div>
     </div>
 </section>
 
-<!-- SEKSI 3: VISUALISASI PROYEKSI & KALKULATOR PORTOFOLIO PAJAK -->
-<div class="row g-4 mb-4">
-    <!-- KIRI: VISUALISASI PERBANDINGAN HARGA & SINYAL SVR -->
+<!-- AREA GRAFIK HASIL & KALKULATOR -->
+<div class="row g-4 mb-4" id="resultContainer" style="display: none;">
     <div class="col-lg-7">
-        <section class="surface-card h-100 d-flex flex-column" id="step3-chart" aria-labelledby="headingProjectionChart">
-            <div class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-chart-column"></i></span>
-                    <div>
-                        <h2 id="headingProjectionChart" class="panel-title">Komparasi Harga H+0 vs Proyeksi H+1</h2>
-                        <p class="panel-subtitle">Perbandingan harga jual &amp; buyback beserta indikator arah sinyal SVR.</p>
+        <section class="surface-card h-100 d-flex flex-column" id="step3-chart" aria-labelledby="headingProjReport">
+            <div class="text-center border-bottom pb-3 mb-4" style="border-color: var(--border-subtle) !important;">
+                <h2 id="headingProjReport" class="panel-title justify-content-center">Laporan Proyeksi Harga</h2>
+            </div>
+
+            <div class="row text-center mb-4 align-items-center">
+                <div class="col-4 border-end" style="border-color: var(--border-gold) !important;">
+                    <div class="text-muted small">Aktual (H+0)</div>
+                    <div class="fw-bold fs-6 text-white mt-1" id="sellToday">-</div>
+                </div>
+                <div class="col-4 border-end" style="border-color: var(--border-gold) !important;">
+                    <div class="text-muted small">Sinyal SVR</div>
+                    <div style="position: relative; height: 60px; width: 100%; display: flex; justify-content: center;">
+                        <canvas id="gaugeChart" aria-label="Indikator Sinyal SVR" role="img"></canvas>
+                        <div id="gaugeLabel" style="position: absolute; bottom: 0; font-weight: 700; font-size: 0.8rem; color: var(--gold-primary);">NEUTRAL</div>
                     </div>
+                </div>
+                <div class="col-4">
+                    <div class="text-muted small">Estimasi (H+1)</div>
+                    <div class="fw-bold fs-6 text-gold mt-1" id="sellBesok">-</div>
                 </div>
             </div>
 
-            <div class="row text-center g-3 mb-4 align-items-center">
-                <div class="col-4">
-                    <div class="p-3 rounded-3" style="background-color: var(--bg-input); border: 1px solid var(--border-subtle);">
-                        <div class="text-muted small fw-semibold">Harga Aktual (H+0)</div>
-                        <div class="fw-bold fs-5 mt-1" id="sellToday"><span class="skeleton-line"></span></div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="text-muted small fw-semibold mb-1">Indikator Sinyal</div>
-                    <div style="position: relative; height: 68px; width: 100%; display: flex; justify-content: center;">
-                        <canvas id="gaugeChart" aria-label="Indikator Sinyal Transaksi SVR" role="img"></canvas>
-                        <div id="gaugeLabel" style="position: absolute; bottom: 0; font-weight: 800; font-size: 0.78rem; color: var(--gold-primary);">HOLD / NEUTRAL</div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="p-3 rounded-3" style="background-color: var(--bg-input); border: 1px solid var(--border-gold);">
-                        <div class="text-muted small fw-semibold">Proyeksi SVR (H+1)</div>
-                        <div class="fw-bold fs-5 mt-1 text-gold" id="sellBesok"><span class="skeleton-line"></span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4 flex-grow-1 align-items-center">
-                <div class="col-md-7">
-                    <h3 class="text-secondary-light small fw-bold mb-2 text-center">Komparasi Jual &amp; Buyback (IDR)</h3>
+            <div class="row flex-grow-1 align-items-center mt-2">
+                <div class="col-md-7 mb-4 mb-md-0">
                     <div class="chart-box-sm">
-                        <canvas id="predChart" aria-label="Grafik Batang Komparasi Harga Jual dan Buyback" role="img"></canvas>
+                        <canvas id="predChart" aria-label="Grafik Proyeksi Harga" role="img"></canvas>
                     </div>
                 </div>
-                <div class="col-md-5">
-                    <h3 class="text-secondary-light small fw-bold mb-2 text-center">Distribusi Probabilitas Arah</h3>
-                    <div class="chart-box-sm">
-                        <canvas id="polarChart" aria-label="Grafik Polar Probabilitas Arah Pasar" role="img"></canvas>
+                <div class="col-md-5" style="border-left: 1px solid var(--border-gold);">
+                    <div class="text-center text-muted mb-2" style="font-size: 0.75rem;">Distribusi Probabilitas Arah Pasar</div>
+                    <div class="chart-box-sm" style="height: 195px;">
+                        <canvas id="polarChart" aria-label="Distribusi Probabilitas Arah Pasar" role="img"></canvas>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- KANAN: KALKULATOR PROFIT PORTOFOLIO & PAJAK PPh 22 -->
     <div class="col-lg-5">
-        <section class="surface-card h-100" id="calculatorSection" aria-labelledby="headingCalculator">
-            <div class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-calculator"></i></span>
-                    <div>
-                        <h2 id="headingCalculator" class="panel-title">Kalkulator Portofolio &amp; Pajak PPh 22</h2>
-                        <p class="panel-subtitle">Simulasi nilai buyback bersih sesuai PMK No. 34/2017.</p>
-                    </div>
-                </div>
-                <span class="status-badge status-badge-gold" title="Tersimpan di peramban Anda">
-                    <i class="fa-solid fa-hard-drive" aria-hidden="true"></i> Auto-Save
-                </span>
+        <section class="surface-card h-100" id="step4-calculator" aria-labelledby="headingCalc">
+            <div class="border-bottom pb-3 mb-3 d-flex align-items-center justify-content-between" style="border-color: var(--border-subtle) !important;">
+                <h2 id="headingCalc" class="panel-title">Kalkulator Profit</h2>
+                <span class="status-badge status-badge-gold"><i class="fa-solid fa-floppy-disk"></i> Auto-Save</span>
             </div>
 
-            <div id="transactionList" class="mb-3"></div>
+            <div id="transactionList" class="mt-3"></div>
 
-            <div class="d-flex flex-wrap gap-2 mb-4 pb-3 border-bottom" style="border-color: var(--border-subtle) !important;">
+            <div class="d-flex justify-content-start gap-2 mb-3 pb-3 border-bottom" style="border-color: var(--border-subtle) !important;">
                 <button type="button" class="btn-action" onclick="addPortfolioRow('', '')">
                     <i class="fa-solid fa-plus" aria-hidden="true"></i>
-                    <span>Tambah Riwayat Beli</span>
+                    <span>Tambah Entri</span>
                 </button>
                 <button type="button" class="btn-action btn-action-danger" onclick="resetPortfolio()">
                     <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
-                    <span>Reset Portofolio</span>
+                    <span>Reset</span>
                 </button>
             </div>
 
-            <div class="mb-4">
-                <label class="form-label-custom" for="calcHargaJual">
-                    <span>Harga Buyback Acuan (per Gram)</span>
-                    <span class="text-gold small">Otomatis Terisi</span>
-                </label>
+            <div class="mb-3">
+                <label class="form-label-custom text-gold" for="calcHargaJual">Harga Buyback Acuan</label>
                 <div class="input-group">
                     <span class="input-group-text input-group-text-dark">Rp</span>
-                    <input type="number" id="calcHargaJual" class="form-control input-dark" placeholder="Contoh: 2438000">
+                    <input type="number" id="calcHargaJual" class="form-control input-dark" placeholder="Otomatis terisi...">
                 </div>
             </div>
 
-            <button type="button" id="btnHitungSimulasi" class="btn-gold-primary w-100">
-                <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
-                <span>Hitung Estimasi Profit Bersih</span>
-            </button>
+            <button type="button" id="btnHitungSimulasi" class="btn-gold-primary w-100">Kalkulasi Keuntungan</button>
 
-            <div id="calcResult" class="mt-4 p-4 rounded-3 d-none" style="border: 1px solid var(--status-success-border);" aria-live="polite">
-                <h3 class="text-center fw-bold fs-5 mb-3" id="resProfitText">ESTIMASI PROFIT: +Rp 0</h3>
-                <div class="row g-3 text-center small">
-                    <div class="col-6">
-                        <div class="text-muted">Total Kepemilikan</div>
-                        <div id="resGrams" class="fw-bold text-white fs-6">0 Gram</div>
+            <div id="calcResult" class="mt-3 p-3 rounded-3 d-none" style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10B981;" aria-live="polite">
+                <h3 class="text-center fw-bolder fs-5 mb-2" id="resProfitText" style="color: #10B981;">PROFIT: +Rp 0</h3>
+                <div class="row mt-2 text-center small text-white">
+                    <div class="col-6 border-end" style="border-color: rgba(255,255,255,0.18) !important;">
+                        Total Emas:<br><span id="resGrams" class="fw-bold">0 gr</span><br><br>
+                        Modal Rata-rata:<br><span id="resAvg" class="fw-bold">Rp 0</span>
                     </div>
                     <div class="col-6">
-                        <div class="text-muted">Harga Beli Rata-rata</div>
-                        <div id="resAvg" class="fw-bold text-white fs-6">Rp 0</div>
-                    </div>
-                    <div class="col-6">
-                        <div class="text-muted">Total Modal Awal</div>
-                        <div id="resModal" class="fw-bold text-white">Rp 0</div>
-                    </div>
-                    <div class="col-6">
-                        <div class="text-muted">Potongan PPh 22</div>
-                        <div id="resTax" class="fw-bold text-gold">Rp 0</div>
-                    </div>
-                    <div class="col-6">
-                        <div class="text-muted">Nilai Buyback Bersih</div>
-                        <div id="resNetValue" class="fw-bold text-white">Rp 0</div>
-                    </div>
-                    <div class="col-6">
-                        <div class="text-muted">Rasio Pertumbuhan</div>
-                        <div id="resPercent" class="fw-bold text-white fs-6">0%</div>
+                        Total Modal:<br><span id="resModal" class="fw-bold">Rp 0</span><br><br>
+                        Pertumbuhan:<br><span id="resPercent" class="fw-bold">0%</span>
                     </div>
                 </div>
             </div>
@@ -328,22 +249,17 @@
     </div>
 </div>
 
-<!-- SEKSI 4: KALENDER & SENTIMEN MAKROEKONOMI GLOBAL -->
-<section id="macroSentimentSection" class="surface-card mb-4" aria-labelledby="headingMacroSentiment">
+<!-- WIDGET KALENDER EKONOMI -->
+<section class="surface-card mb-4" id="step5-news" aria-labelledby="headingMacroNews">
     <div class="panel-header">
-        <div class="panel-title-group">
-            <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span>
-            <div>
-                <h2 id="headingMacroSentiment" class="panel-title">Kalender Ekonomi &amp; Sentimen Pasar Global</h2>
-                <p class="panel-subtitle">Rilis data suku bunga The Fed, inflasi AS, dan berita komoditas yang memengaruhi harga emas dunia.</p>
-            </div>
-        </div>
+        <h2 id="headingMacroNews" class="panel-title">
+            <i class="fa-solid fa-newspaper text-gold" aria-hidden="true"></i>
+            <span>Sentimen Makroekonomi Terkini</span>
+        </h2>
     </div>
-
     <div class="row g-4">
         <div class="col-lg-6">
-            <h3 class="text-secondary-light small fw-bold mb-2">Agenda Rilis Makroekonomi (USD)</h3>
-            <div class="p-2 rounded-3" style="background-color: var(--bg-input); border: 1px solid var(--border-subtle); height: 420px; overflow: hidden;">
+            <div class="p-2" style="background-color: var(--bg-input); border: 1px solid var(--border-gold); border-radius: 12px; height: 420px; overflow: hidden;">
                 <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
                     <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
                     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
@@ -353,8 +269,7 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <h3 class="text-secondary-light small fw-bold mb-2">Lini Masa Berita Pasar Finansial</h3>
-            <div class="p-2 rounded-3" style="background-color: var(--bg-input); border: 1px solid var(--border-subtle); height: 420px; overflow: hidden;">
+            <div class="p-2" style="background-color: var(--bg-input); border: 1px solid var(--border-gold); border-radius: 12px; height: 420px; overflow: hidden;">
                 <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
                     <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
                     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
@@ -366,45 +281,31 @@
     </div>
 </section>
 
-<!-- SEKSI 5: RINGKASAN LOG DATA HISTORIS -->
-<section class="surface-card mb-2" aria-labelledby="headingHomeHistory">
+<!-- TABEL HISTORIS LOG -->
+<section class="surface-card mb-2" aria-labelledby="headingHomeTable">
     <div class="panel-header">
-        <div class="panel-title-group">
-            <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-table-list"></i></span>
-            <div>
-                <h2 id="headingHomeHistory" class="panel-title">Rekam Jejak Harga &amp; Moving Average (60 Periode Terakhir)</h2>
-                <p class="panel-subtitle">Perbandingan harga penutupan emas Antam terhadap Simple Moving Average 7 dan 30 hari.</p>
-            </div>
-        </div>
-        <button type="button" onclick="downloadHomeCSV()" class="btn-action" aria-label="Unduh data historis dalam format CSV">
-            <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
+        <h2 id="headingHomeTable" class="panel-title">
+            <i class="fa-solid fa-table-list text-muted" aria-hidden="true"></i>
+            <span>Log Data Historis</span>
+        </h2>
+        <button type="button" onclick="downloadHomeCSV()" class="btn-action" aria-label="Unduh CSV">
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
             <span>Unduh CSV</span>
         </button>
     </div>
 
-    <div class="table-scroll-container" tabindex="0" role="region" aria-label="Tabel Log Data Historis Emas Antam">
+    <div class="table-scroll-container" tabindex="0" role="region" aria-label="Log Data Historis">
         <table class="table-executive text-center" id="historyTable">
             <thead>
                 <tr>
                     <th scope="col">Tanggal</th>
-                    <th scope="col">Harga Antam (1 Gram)</th>
-                    <th scope="col">SMA 7 Hari</th>
-                    <th scope="col">SMA 30 Hari</th>
+                    <th scope="col">Harga Antam</th>
+                    <th scope="col">SMA 7</th>
+                    <th scope="col">SMA 30</th>
                 </tr>
             </thead>
             <tbody id="dataTableBody">
-                <tr>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                </tr>
-                <tr>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                </tr>
+                <tr><td colspan="4" class="text-muted py-4">Memuat data log dari server...</td></tr>
             </tbody>
         </table>
     </div>

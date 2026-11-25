@@ -1,37 +1,30 @@
 {% extends 'base.html' %}
-{% set breadcrumb_title = 'Dasbor Analitik & Evaluasi Model' %}
+{% set breadcrumb_title = 'Dasbor Analitik' %}
 
-{% block title %}Dasbor Analitik & Evaluasi SVR | Sistem Prediksi Harga Emas Antam{% endblock %}
-{% block meta_description %}Laporan performa ilmiah model Support Vector Regression (RMSE Rp 125.420, MAE Rp 69.409, R-Squared 93.02%), analisis tren SMA/RSI, dan bobot variabel makroekonomi.{% endblock %}
+{% block title %}Dasbor Analitik | Prediksi Emas AI{% endblock %}
+{% block meta_description %}Laporan performa model Support Vector Regression (RMSE, MAE, R-Squared), analisis sentimen, dan data historis SVR.{% endblock %}
 
 {% block content %}
-<!-- HEADER HALAMAN (TEPAT SATU H1) -->
 <div class="page-header">
     <div>
-        <h1 class="page-title">Dasbor Analitik &amp; Validasi Model SVR</h1>
-        <p class="page-subtitle">Evaluasi akurasi statistik, analisis momentum teknikal (SMA &amp; RSI 14), dan kontribusi variabel independen.</p>
+        <h1 class="page-title">Dasbor Analitik</h1>
+        <p class="page-subtitle">Laporan performa model, analisis sentimen, dan data historis SVR.</p>
     </div>
     <div class="page-actions">
-        <button type="button" onclick="window.print()" class="btn-action" aria-label="Cetak laporan analitik ke PDF">
+        <button type="button" onclick="window.print()" class="btn-action" title="Cetak Laporan ke PDF">
             <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
-            <span>Cetak Laporan PDF</span>
-        </button>
-        <button type="button" onclick="downloadDashboardCSV()" class="btn-action" aria-label="Ekspor tabel historis ke CSV">
-            <i class="fa-solid fa-download" aria-hidden="true"></i>
-            <span>Ekspor CSV</span>
+            <span>Export PDF</span>
         </button>
     </div>
 </div>
 
-<!-- SEKSI 1: METRIK VALIDASI ILMIAH -->
-<section class="mb-4" aria-labelledby="headingValidationMetrics">
+<!-- METRIK VALIDASI ILMIAH -->
+<section class="mb-4" aria-labelledby="headingValidation">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 id="headingValidationMetrics" class="panel-title">
-            <i class="fa-solid fa-award text-gold me-2" aria-hidden="true"></i>Metrik Pengujian &amp; Evaluasi Model (Kernel RBF)
+        <h2 id="headingValidation" class="panel-title">
+            <i class="fa-solid fa-square-check text-warning" aria-hidden="true"></i>
+            <span>Validasi Ilmiah: Performa Mesin SVR</span>
         </h2>
-        <span class="status-badge status-badge-success">
-            <i class="fa-solid fa-circle-check" aria-hidden="true"></i> Tervalidasi Data Uji
-        </span>
     </div>
 
     <div class="row g-3">
@@ -39,9 +32,9 @@
             <article class="kpi-card">
                 <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-ruler-combined"></i></div>
                 <div class="kpi-content">
-                    <p class="kpi-label">Root Mean Square Error (RMSE)</p>
-                    <h3 id="valRMSE" class="kpi-value"><span class="skeleton-line"></span></h3>
-                    <span class="kpi-meta">Toleransi simpangan kuadrat rata-rata</span>
+                    <p class="kpi-label">Root Mean Square Error</p>
+                    <h3 id="valRMSE" class="kpi-value">Memuat...</h3>
+                    <span class="kpi-meta">Simpangan maksimal.</span>
                 </div>
             </article>
         </div>
@@ -49,162 +42,137 @@
             <article class="kpi-card">
                 <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-bullseye"></i></div>
                 <div class="kpi-content">
-                    <p class="kpi-label">Mean Absolute Error (MAE)</p>
-                    <h3 id="valMAE" class="kpi-value"><span class="skeleton-line"></span></h3>
-                    <span class="kpi-meta">Rata-rata selisih absolut prediksi</span>
+                    <p class="kpi-label">Mean Absolute Error</p>
+                    <h3 id="valMAE" class="kpi-value">Memuat...</h3>
+                    <span class="kpi-meta">Selisih harga absolut.</span>
                 </div>
             </article>
         </div>
         <div class="col-md-4">
             <article class="kpi-card">
-                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid fa-percent"></i></div>
                 <div class="kpi-content">
-                    <p class="kpi-label">Koefisien Determinasi (R²)</p>
-                    <h3 id="valR2" class="kpi-value" style="color: var(--status-success);"><span class="skeleton-line"></span></h3>
-                    <span class="kpi-meta">Daya jelas 5 variabel makroekonomi</span>
+                    <p class="kpi-label">R-Squared (R²) Score</p>
+                    <h3 id="valR2" class="kpi-value" style="color: var(--status-success);">Memuat...</h3>
+                    <span class="kpi-meta">Kecocokan variabel.</span>
                 </div>
             </article>
         </div>
     </div>
 </section>
 
-<!-- SEKSI 2: GRAFIK TREN HISTORIS & BOBOT VARIABEL -->
-<div class="row g-4 mb-4" id="historicalChartSection">
+<!-- BARIS GRAFIK 1: TREN HARGA & BOBOT VARIABEL -->
+<div class="row g-4 mb-4">
     <div class="col-lg-8">
-        <section class="surface-card h-100" aria-labelledby="headingTrendChart">
+        <section class="surface-card h-100" aria-labelledby="headingHistChart">
             <div class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-wave-square"></i></span>
-                    <div>
-                        <h2 id="headingTrendChart" class="panel-title">Tren Harga Emas Antam, Moving Average &amp; RSI</h2>
-                        <p class="panel-subtitle">Pergerakan 60 periode terakhir disertai indikator teknikal SMA 7, SMA 30, dan RSI 14.</p>
-                    </div>
-                </div>
+                <h2 id="headingHistChart" class="panel-title">
+                    <i class="fa-solid fa-chart-line text-warning" aria-hidden="true"></i>
+                    <span>Tren Harga Emas &amp; Momentum</span>
+                </h2>
                 <div class="d-flex gap-2">
-                    <button type="button" id="btnToggleSMA" class="btn-action active" aria-pressed="true">
-                        <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
-                        <span>Garis SMA</span>
+                    <button type="button" id="btnToggleSMA" class="btn-action">
+                        <i class="fa-solid fa-eye-slash" aria-hidden="true"></i>
+                        <span>SMA</span>
                     </button>
-                    <button type="button" id="btnToggleRSI" class="btn-action" aria-pressed="false">
-                        <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
-                        <span>RSI (14)</span>
+                    <button type="button" id="btnToggleRSI" class="btn-action">
+                        <i class="fa-solid fa-chart-area" aria-hidden="true"></i>
+                        <span>RSI 14</span>
                     </button>
                 </div>
             </div>
-
             <div class="chart-box-lg">
-                <canvas id="historicalChart" aria-label="Grafik Garis Tren Harga Emas Antam Historis" role="img"></canvas>
+                <canvas id="historicalChart" aria-label="Tren Harga Emas dan Momentum" role="img"></canvas>
             </div>
         </section>
     </div>
 
-    <div class="col-lg-4" id="variableImportanceSection">
-        <section class="surface-card h-100" aria-labelledby="headingImportanceChart">
+    <div class="col-lg-4">
+        <section class="surface-card h-100" aria-labelledby="headingWeightChart">
             <div class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-ranking-star"></i></span>
-                    <div>
-                        <h2 id="headingImportanceChart" class="panel-title">Peringkat Pengaruh Variabel</h2>
-                        <p class="panel-subtitle">Kontribusi fitur independen terhadap harga Antam.</p>
-                    </div>
+                <div>
+                    <h2 id="headingWeightChart" class="panel-title">
+                        <i class="fa-solid fa-magnifying-glass-chart text-warning" aria-hidden="true"></i>
+                        <span>Bobot Variabel</span>
+                    </h2>
+                    <p class="panel-subtitle">Korelasi variabel independen.</p>
                 </div>
             </div>
-
-            <div class="chart-box-lg">
-                <canvas id="importanceChart" aria-label="Grafik Batang Bobot Variabel Independen" role="img"></canvas>
+            <div class="chart-box-lg" style="height: 295px;">
+                <canvas id="importanceChart" aria-label="Bobot Variabel Independen" role="img"></canvas>
             </div>
         </section>
     </div>
 </div>
 
-<!-- SEKSI 3: PROPORSI FAKTOR PENGGERAK & PETA SENSITIVITAS -->
+<!-- BARIS GRAFIK 2: PROPORSI & RADAR SENTIMEN -->
 <div class="row g-4 mb-4">
     <div class="col-lg-6">
-        <section class="surface-card h-100" aria-labelledby="headingDoughnutChart">
+        <section class="surface-card h-100" aria-labelledby="headingPropChart">
             <div class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-chart-pie"></i></span>
-                    <div>
-                        <h2 id="headingDoughnutChart" class="panel-title">Komposisi Faktor Pembentuk Harga</h2>
-                        <p class="panel-subtitle">Dominasi nilai tukar USD/IDR dan harga emas spot global (XAU/USD).</p>
-                    </div>
+                <div>
+                    <h2 id="headingPropChart" class="panel-title">
+                        <i class="fa-solid fa-chart-pie text-warning" aria-hidden="true"></i>
+                        <span>Proporsi Faktor Penggerak</span>
+                    </h2>
+                    <p class="panel-subtitle">Persentase kontribusi variabel makro.</p>
                 </div>
             </div>
-
             <div class="chart-box-md">
-                <canvas id="doughnutChart" aria-label="Grafik Donat Proporsi Variabel Makroekonomi" role="img"></canvas>
+                <canvas id="doughnutChart" aria-label="Proporsi Faktor Penggerak" role="img"></canvas>
             </div>
         </section>
     </div>
 
     <div class="col-lg-6">
-        <section class="surface-card h-100" aria-labelledby="headingRadarChart">
+        <section class="surface-card h-100" aria-labelledby="headingRadarSent">
             <div class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-compass-drafting"></i></span>
-                    <div>
-                        <h2 id="headingRadarChart" class="panel-title">Peta Sensitivitas Makroekonomi</h2>
-                        <p class="panel-subtitle">Tingkat respons harga emas domestik terhadap guncangan tiap variabel.</p>
-                    </div>
+                <div>
+                    <h2 id="headingRadarSent" class="panel-title">
+                        <i class="fa-solid fa-spider text-warning" aria-hidden="true"></i>
+                        <span>Peta Sentimen Makroekonomi</span>
+                    </h2>
+                    <p class="panel-subtitle">Indikator volatilitas fundamental global.</p>
                 </div>
             </div>
-
             <div class="chart-box-md">
-                <canvas id="radarChart" aria-label="Grafik Radar Sensitivitas Makroekonomi" role="img"></canvas>
+                <canvas id="radarChart" aria-label="Peta Sentimen Makroekonomi" role="img"></canvas>
             </div>
         </section>
     </div>
 </div>
 
-<!-- SEKSI 4: TABEL LOG HISTORIS DENGAN PENCARIAN CEPAT -->
-<section class="surface-card mb-2" id="historyTableSection" aria-labelledby="headingDashboardTable">
+<!-- LOG DATA HISTORIS -->
+<section class="surface-card mb-2" id="historyTableSection" aria-labelledby="headingLogHist">
     <div class="panel-header">
-        <div class="panel-title-group">
-            <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-database"></i></span>
-            <div>
-                <h2 id="headingDashboardTable" class="panel-title">Basis Data Historis &amp; Sinyal Moving Average</h2>
-                <p class="panel-subtitle">Daftar lengkap harga harian beserta klasifikasi sinyal persilangan SMA 7 terhadap SMA 30.</p>
-            </div>
-        </div>
-
-        <div class="d-flex flex-wrap align-items-center gap-2">
-            <div class="position-relative">
-                <label for="tableSearchFilter" class="visually-hidden">Filter Tanggal atau Sinyal</label>
-                <input type="search" id="tableSearchFilter" class="form-control input-dark" placeholder="Filter tanggal atau sinyal..." style="min-height: 40px; font-size: 0.875rem; min-width: 220px;">
-            </div>
-            <button type="button" onclick="downloadDashboardCSV()" class="btn-action" aria-label="Unduh tabel log historis ke CSV">
-                <i class="fa-solid fa-file-csv" aria-hidden="true"></i>
-                <span>Unduh CSV</span>
+        <h2 id="headingLogHist" class="panel-title">
+            <i class="fa-solid fa-table-list text-muted" aria-hidden="true"></i>
+            <span>Log Data Historis</span>
+        </h2>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <label for="tableSearchFilter" class="visually-hidden">Cari tanggal atau sinyal</label>
+            <input type="search" id="tableSearchFilter" class="form-control input-dark" placeholder="Cari tanggal / sinyal..." style="height: 34px; width: 190px; font-size: 0.8rem;">
+            <span class="status-badge status-badge-gold"><i class="fa-solid fa-database"></i> Live Sinkronisasi</span>
+            <button type="button" onclick="downloadDashboardCSV()" class="btn-action" title="Unduh data ke CSV">
+                <i class="fa-solid fa-download" aria-hidden="true"></i>
+                <span>CSV</span>
             </button>
         </div>
     </div>
 
-    <div class="table-scroll-container" tabindex="0" role="region" aria-label="Tabel Lengkap Data Historis dan Sinyal Pasar">
+    <div class="table-scroll-container" tabindex="0" role="region" aria-label="Log Data Historis">
         <table class="table-executive text-center">
             <thead>
                 <tr>
                     <th scope="col">Tanggal</th>
-                    <th scope="col">Harga Antam (1 Gram)</th>
+                    <th scope="col">Harga Antam (1gr)</th>
                     <th scope="col">SMA 7 (Pendek)</th>
                     <th scope="col">SMA 30 (Panjang)</th>
-                    <th scope="col">Indikasi Tren (DSS)</th>
+                    <th scope="col">Sinyal Pasar (DSS)</th>
                 </tr>
             </thead>
             <tbody id="dataTableBody">
-                <tr>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                </tr>
-                <tr>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                    <td><span class="skeleton-line"></span></td>
-                </tr>
+                <tr><td colspan="5" class="text-muted py-4">Memuat data dari server...</td></tr>
             </tbody>
         </table>
     </div>

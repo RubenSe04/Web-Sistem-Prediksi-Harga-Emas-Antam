@@ -1,216 +1,146 @@
 {% extends 'base.html' %}
-{% set breadcrumb_title = 'Tentang Sistem & Metodologi' %}
+{% set breadcrumb_title = 'Tentang Sistem' %}
 
-{% block title %}Tentang Sistem & Metodologi SVR | Sistem Prediksi Harga Emas Antam{% endblock %}
-{% block meta_description %}Dokumentasi arsitektur pipeline data, metodologi Support Vector Regression (SVR) berkernel Radial Basis Function (RBF), dan regulasi pajak emas PMK No. 34/2017.{% endblock %}
+{% block title %}Tentang Sistem | Prediksi Emas AI{% endblock %}
+{% block meta_description %}Arsitektur pipeline data, landasan teori Support Vector Regression (SVR), dan regulasi pajak emas PMK No. 34/2017.{% endblock %}
 
 {% block content %}
-<!-- HEADER HALAMAN (TEPAT SATU H1) -->
 <div class="page-header">
     <div>
-        <h1 class="page-title">Arsitektur &amp; Landasan Metodologi Sistem</h1>
-        <p class="page-subtitle">Dokumentasi ilmiah pipeline akuisisi data, algoritma Support Vector Regression, dan regulasi pajak investasi emas.</p>
-    </div>
-    <div class="page-actions">
-        <a href="{{ url_for('home') }}" class="btn-action">
-            <i class="fa-solid fa-sliders" aria-hidden="true"></i>
-            <span>Buka Simulator SVR</span>
-        </a>
-        <a href="{{ url_for('dashboard') }}" class="btn-action">
-            <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
-            <span>Lihat Metrik Evaluasi</span>
-        </a>
+        <h1 class="page-title">Tentang Sistem</h1>
+        <p class="page-subtitle">Arsitektur, landasan teori, dan regulasi sistem SVR.</p>
     </div>
 </div>
 
-<!-- SEKSI 1: IDENTITAS PENELITIAN SKRIPSI (DARI CMS DATA/CONTENT.JSON) -->
-<section class="surface-card surface-card-highlight mb-4" aria-labelledby="headingResearchProfile">
-    <div class="row align-items-center g-4">
-        <div class="col-lg-8">
-            <span class="status-badge status-badge-gold mb-2">
-                <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Riset Akademis &amp; Sistem Pendukung Keputusan
-            </span>
-            <h2 id="headingResearchProfile" class="fw-bold fs-4 text-white mb-2">
-                {{ site_content.author.thesis_title if site_content and site_content.author else 'Penerapan Support Vector Regression (SVR) Pada Sistem Pendukung Keputusan Prediksi Harga Emas Multivariat' }}
-            </h2>
-            <p class="text-secondary-light mb-0" style="line-height: 1.65;">
-                {{ site_content.author.summary if site_content and site_content.author else '' }}
-            </p>
-        </div>
-        <div class="col-lg-4">
-            <div class="p-4 rounded-3" style="background-color: var(--bg-input); border: 1px solid var(--border-gold);">
-                <div class="text-muted small fw-semibold text-uppercase">Peneliti &amp; Pengembang</div>
-                <div class="fs-5 fw-bold text-gold mt-1">
-                    {{ site_content.author.name if site_content and site_content.author else 'Ruben Setiaji' }}
-                </div>
-                <div class="text-secondary-light small mt-1">
-                    {{ site_content.author.program if site_content and site_content.author else 'Program Studi Teknik Informatika' }}
-                </div>
-                <div class="text-muted small">
-                    {{ site_content.author.university if site_content and site_content.author else 'Universitas Tarumanagara (UNTAR)' }}
-                </div>
-            </div>
-        </div>
+<!-- KARTU IDENTITAS PENELITI -->
+<section class="surface-card text-center position-relative overflow-hidden mb-4" style="padding: 34px 20px; border: 1px solid var(--gold-primary);" aria-labelledby="headingThesisTitle">
+    <div style="position: absolute; top: -40px; left: -15px; font-size: 13rem; color: rgba(212, 175, 55, 0.03); z-index: 0; pointer-events: none;" aria-hidden="true">
+        <i class="fa-solid fa-graduation-cap"></i>
+    </div>
+    <div style="position: relative; z-index: 1;">
+        <h2 id="headingThesisTitle" class="fw-bold fs-4 mb-2 text-white">Penerapan Support Vector Regression (SVR)</h2>
+        <p class="text-muted fw-medium mb-3">Pada Sistem Pendukung Keputusan Prediksi Harga Emas Multivariat</p>
+        <hr style="width: 72px; border: 2px solid var(--gold-primary); opacity: 1; margin: 0 auto 16px auto; border-radius: 5px;">
+        <p class="mb-1 fw-bold text-gold" style="font-size: 1.05rem;">{{ site_content.author.name if site_content and site_content.author else 'Ruben Setiaji' }}</p>
+        <p class="text-muted small mb-0">{{ site_content.author.program if site_content and site_content.author else 'Program Studi Teknik Informatika' }}</p>
+        <p class="text-muted small mb-0">{{ site_content.author.university if site_content and site_content.author else 'Universitas Tarumanagara (UNTAR)' }}</p>
     </div>
 </section>
 
-<!-- SEKSI 2: PIPELINE DATA & METODOLOGI SVR -->
-<div class="row g-4 mb-4">
-    <!-- KIRI: ARSITEKTUR PIPELINE DATA -->
+<div class="row g-4">
+    <!-- KIRI: ARSITEKTUR PIPELINE DATA VISUAL -->
     <div class="col-lg-5">
-        <section class="surface-card h-100" aria-labelledby="headingPipeline">
-            <div class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span>
-                    <div>
-                        <h2 id="headingPipeline" class="panel-title">Arsitektur Pipeline Sistem</h2>
-                        <p class="panel-subtitle">Tahapan pemrosesan end-to-end dari ekstraksi data hingga visualisasi DSS.</p>
-                    </div>
-                </div>
+        <section class="surface-card h-100" aria-labelledby="headingPipelineVisual">
+            <h2 id="headingPipelineVisual" class="panel-title mb-2">
+                <i class="fa-solid fa-network-wired text-warning" aria-hidden="true"></i>
+                <span>Arsitektur Pipeline Data</span>
+            </h2>
+            <p class="small text-muted mb-4">Alur kerja otomatis mulai dari ekstraksi data pasar hingga kalkulasi prediksi.</p>
+
+            <div class="p-3 mb-2 text-center fw-bold" style="background: var(--bg-input); border: 1px solid var(--border-gold); color: #fff; border-radius: 12px;">
+                <i class="fa-solid fa-earth-asia mb-1 fs-5 text-warning" aria-hidden="true"></i>
+                <h3 class="fs-6 fw-bold mb-1">1. Data Acquisition (Real-Time)</h3>
+                <div class="fw-normal text-muted" style="font-size: 0.78rem;">Scraping Logam Mulia &amp; API Makro (YFinance)</div>
             </div>
 
-            <div class="d-flex flex-column gap-3">
-                {% if site_content and site_content.pipeline %}
-                    {% for item in site_content.pipeline %}
-                    <article class="pipeline-step-card">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="pipeline-step-num">TAHAP {{ item.step }}</span>
-                            <span class="status-badge status-badge-gold">{{ item.badge }}</span>
-                        </div>
-                        <h3 class="fs-6 fw-bold text-white mb-1">{{ item.title }}</h3>
-                        <div class="text-gold small fw-semibold mb-2">{{ item.subtitle }}</div>
-                        <p class="text-secondary-light small mb-0" style="line-height: 1.55;">{{ item.description }}</p>
-                    </article>
-                    {% endfor %}
-                {% endif %}
+            <div class="text-center fs-5 my-1 text-gold" aria-hidden="true"><i class="fa-solid fa-caret-down"></i></div>
+
+            <div class="p-3 mb-2 text-center fw-bold" style="background: linear-gradient(135deg, #BF953F, #FCF6BA); color: #000; border-radius: 12px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);">
+                <i class="fa-solid fa-filter mb-1 fs-5 text-dark" aria-hidden="true"></i>
+                <h3 class="fs-6 fw-bold mb-1 text-dark">2. Data Preprocessing</h3>
+                <div class="fw-medium text-dark opacity-75" style="font-size: 0.78rem;">Penanganan Data Kosong &amp; Standarisasi (Z-Score)</div>
+            </div>
+
+            <div class="text-center fs-5 my-1 text-gold" aria-hidden="true"><i class="fa-solid fa-caret-down"></i></div>
+
+            <div class="p-3 mb-2 text-center fw-bold" style="background: var(--bg-input); border: 1px solid var(--border-gold); color: #fff; border-radius: 12px;">
+                <i class="fa-solid fa-microchip mb-1 fs-5 text-warning" aria-hidden="true"></i>
+                <h3 class="fs-6 fw-bold mb-1">3. Machine Learning Core</h3>
+                <div class="fw-normal text-muted" style="font-size: 0.78rem;">Prediksi SVR dengan Kernel Radial Basis Function</div>
+            </div>
+
+            <div class="text-center fs-5 my-1 text-gold" aria-hidden="true"><i class="fa-solid fa-caret-down"></i></div>
+
+            <div class="p-3 text-center fw-bold" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10B981; border-radius: 12px;">
+                <i class="fa-solid fa-desktop mb-1 fs-5 text-success" aria-hidden="true"></i>
+                <h3 class="fs-6 fw-bold mb-1" style="color: #10B981;">4. Decision Support System (DSS)</h3>
+                <div class="fw-normal" style="font-size: 0.78rem; color: rgba(16, 185, 129, 0.85);">Visualisasi Flask, Analisis Tren, &amp; Kalkulator Profit</div>
             </div>
         </section>
     </div>
 
-    <!-- KANAN: LANDASAN METODOLOGI SVR & VARIABEL MULTIVARIAT -->
+    <!-- KANAN: METODOLOGI, REGULASI, & LINK PORTAL -->
     <div class="col-lg-7">
-        <section class="surface-card mb-4" aria-labelledby="headingMethodology">
-            <div class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
-                    <div>
-                        <h2 id="headingMethodology" class="panel-title">Landasan Algoritma Support Vector Regression</h2>
-                        <p class="panel-subtitle">Pendekatan regresi berbasis margin toleransi (&epsilon;-insensitive loss function).</p>
-                    </div>
-                </div>
-            </div>
+        <section class="surface-card mb-4" aria-labelledby="headingMethodologySVR">
+            <h2 id="headingMethodologySVR" class="panel-title mb-3">
+                <i class="fa-solid fa-book-open text-warning" aria-hidden="true"></i>
+                <span>Landasan Metodologi SVR</span>
+            </h2>
 
-            <p class="text-secondary-light" style="line-height: 1.7;">
-                {{ site_content.methodology.overview if site_content and site_content.methodology else '' }}
+            <p class="text-muted small" style="line-height: 1.7;">
+                <strong class="text-gold">Support Vector Regression (SVR)</strong> adalah algoritma <em>supervised learning</em> pengembangan dari Support Vector Machine yang mencari fungsi regresi dengan margin toleransi (&epsilon;), sehingga tangguh terhadap anomali harga komoditas (<em>outlier</em>).
             </p>
 
-            <div class="p-4 rounded-3 my-4" style="background-color: var(--bg-input); border: 1px solid var(--border-gold);">
-                <h3 class="fs-6 fw-bold text-gold mb-2">
-                    <i class="fa-solid fa-atom me-2" aria-hidden="true"></i>{{ site_content.methodology.kernel_title if site_content and site_content.methodology else 'Keunggulan Kernel Radial Basis Function (RBF)' }}
+            <div class="p-3 my-3 rounded-3" style="background-color: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-gold);">
+                <h3 class="fs-6 fw-bold text-gold mb-1">
+                    <i class="fa-solid fa-lightbulb me-1 text-warning" aria-hidden="true"></i> Mengapa Kernel RBF?
                 </h3>
-                <p class="text-secondary-light small mb-0" style="line-height: 1.65;">
-                    {{ site_content.methodology.kernel_explanation if site_content and site_content.methodology else '' }}
+                <p class="text-muted small mb-0" style="line-height: 1.6;">
+                    Harga emas bergerak fluktuatif (non-linier). Kernel <em>Radial Basis Function</em> (RBF) memetakan kerumitan data harga ke dimensi matematis yang lebih tinggi agar pola non-linier dapat diprediksi secara akurat.
                 </p>
             </div>
 
-            <h3 class="fs-6 fw-bold text-white mb-3">
-                <i class="fa-solid fa-layer-group text-gold me-2" aria-hidden="true"></i>Spesifikasi 5 Variabel Independen (Multivariat)
+            <h3 class="fs-6 fw-bold mt-3 mb-2 text-white">
+                <i class="fa-solid fa-layer-group me-1 text-warning" aria-hidden="true"></i> 5 Parameter Independen (Multivariat)
             </h3>
 
-            <div class="table-scroll-container">
-                <table class="table-executive">
-                    <thead>
-                        <tr>
-                            <th scope="col">Kode</th>
-                            <th scope="col">Variabel Makroekonomi</th>
-                            <th scope="col">Bobot</th>
-                            <th scope="col">Peran Fundamental</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if site_content and site_content.methodology and site_content.methodology.variables %}
-                            {% for v in site_content.methodology.variables %}
-                            <tr>
-                                <td class="fw-bold text-gold">{{ v.code }}</td>
-                                <td>
-                                    <div class="fw-bold">{{ v.name }}</div>
-                                    <div class="text-muted small">{{ v.unit }}</div>
-                                </td>
-                                <td><span class="status-badge status-badge-gold">{{ v.weight }}</span></td>
-                                <td class="text-secondary-light" style="white-space: normal; min-width: 240px;">{{ v.role }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
+            <ul class="list-unstyled text-muted small mb-0" style="line-height: 1.85;">
+                <li><i class="fa-solid fa-check-circle me-2 text-warning" aria-hidden="true"></i><strong class="text-white">Harga Emas Antam (H-1):</strong> Basis momentum pasar lokal (12,5%).</li>
+                <li><i class="fa-solid fa-check-circle me-2 text-warning" aria-hidden="true"></i><strong class="text-white">Emas Global (XAU/USD):</strong> Sentimen acuan emas dunia per <em>Troy Oz</em> (35,0%).</li>
+                <li><i class="fa-solid fa-check-circle me-2 text-warning" aria-hidden="true"></i><strong class="text-white">Kurs USD/IDR:</strong> Variabel konversi valuta paling dominan (42,5%).</li>
+                <li><i class="fa-solid fa-check-circle me-2 text-warning" aria-hidden="true"></i><strong class="text-white">Indeks Dolar (DXY):</strong> Mengukur kekuatan dolar global (4,0%).</li>
+                <li><i class="fa-solid fa-check-circle me-2 text-warning" aria-hidden="true"></i><strong class="text-white">Minyak WTI:</strong> Proksi inflasi energi pemicu aset lindung nilai (6,0%).</li>
+            </ul>
         </section>
 
-        <!-- REGULASI PAJAK & REFERENSI EKSTERNAL -->
-        <section class="surface-card mb-4" id="taxRegulationSection" aria-labelledby="headingTaxRegulation">
-            <div class="panel-header">
-                <div class="panel-title-group">
-                    <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span>
-                    <div>
-                        <h2 id="headingTaxRegulation" class="panel-title">
-                            {{ site_content.tax_regulation.title if site_content and site_content.tax_regulation else 'Regulasi Pajak Emas (PMK No. 34/2017)' }}
-                        </h2>
-                        <p class="panel-subtitle">Ketentuan potongan Pajak Penghasilan Pasal 22 atas penjualan kembali emas batangan.</p>
-                    </div>
-                </div>
-            </div>
-            <p class="text-secondary-light small mb-0" style="line-height: 1.7;">
-                {{ site_content.tax_regulation.description if site_content and site_content.tax_regulation else '' }}
+        <section class="surface-card mb-4" id="taxRegulationSection" style="border-color: rgba(16, 185, 129, 0.35);" aria-labelledby="headingTaxRule">
+            <h2 id="headingTaxRule" class="panel-title mb-2">
+                <i class="fa-solid fa-scale-balanced" style="color: #10B981;" aria-hidden="true"></i>
+                <span>Regulasi Pajak Emas (PMK No. 34/2017)</span>
+            </h2>
+            <p class="text-muted small mb-0" style="line-height: 1.65;">
+                Dilengkapi <strong>Kalkulator Profit Taat Pajak</strong>. Sesuai PPh Pasal 22, transaksi penjualan kembali (<em>buyback</em>) emas batangan ke Antam di atas <strong>Rp 10.000.000</strong> dikenakan potongan pajak <strong>1,5%</strong> (NPWP) atau <strong>3%</strong> (non-NPWP).
             </p>
         </section>
 
-        <!-- TAUTAN PORTAL RESMI -->
         <div class="row g-3">
-            {% if site_content and site_content.external_links %}
-                {% for link in site_content.external_links %}
-                <div class="col-md-6">
-                    <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none d-block h-100">
-                        <article class="kpi-card">
-                            <div class="kpi-icon-circle" aria-hidden="true"><i class="fa-solid {{ link.icon }}"></i></div>
-                            <div class="kpi-content">
-                                <h3 class="fs-6 fw-bold text-white mb-1">
-                                    {{ link.title }}
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-gold ms-1 small" aria-hidden="true"></i>
-                                </h3>
-                                <span class="kpi-meta">{{ link.subtitle }}</span>
-                            </div>
-                        </article>
-                    </a>
-                </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-</div>
-
-<!-- SEKSI 3: PERTANYAAN UMUM (FAQ DARI CMS JSON) -->
-{% if site_content and site_content.faq %}
-<section class="surface-card mb-2" aria-labelledby="headingFaq">
-    <div class="panel-header">
-        <div class="panel-title-group">
-            <span class="panel-icon" aria-hidden="true"><i class="fa-solid fa-circle-question"></i></span>
-            <div>
-                <h2 id="headingFaq" class="panel-title">Pertanyaan Umum Mengenai Sistem (FAQ)</h2>
-                <p class="panel-subtitle">Penjelasan singkat cara kerja model prediksi dan keamanan privasi portofolio.</p>
+            <div class="col-md-6">
+                <a href="https://www.logammulia.com/id/harga-emas-hari-ini" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                    <article class="kpi-card p-3" style="background-color: var(--bg-input);">
+                        <div class="kpi-icon-circle" style="width: 40px; height: 40px; font-size: 1rem;" aria-hidden="true">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+                        <div>
+                            <h3 class="m-0 fw-bold text-white" style="font-size: 0.92rem;">Portal Logam Mulia</h3>
+                            <span class="text-muted" style="font-size: 0.75rem;">Verifikasi Harga Resmi PT Antam Tbk.</span>
+                        </div>
+                    </article>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="https://id.investing.com/commodities/gold" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                    <article class="kpi-card p-3" style="background-color: var(--bg-input);">
+                        <div class="kpi-icon-circle" style="width: 40px; height: 40px; font-size: 1rem;" aria-hidden="true">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <div>
+                            <h3 class="m-0 fw-bold text-white" style="font-size: 0.92rem;">Bursa Komoditas Global</h3>
+                            <span class="text-muted" style="font-size: 0.75rem;">Pantau Emas Dunia (XAU/USD) &amp; DXY.</span>
+                        </div>
+                    </article>
+                </a>
             </div>
         </div>
     </div>
-
-    <div class="row g-3">
-        {% for item in site_content.faq %}
-        <div class="col-md-4">
-            <article class="p-4 rounded-3 h-100" style="background-color: var(--bg-input); border: 1px solid var(--border-subtle);">
-                <h3 class="fs-6 fw-bold text-gold mb-2">{{ item.question }}</h3>
-                <p class="text-secondary-light small mb-0" style="line-height: 1.6;">{{ item.answer }}</p>
-            </article>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-{% endif %}
+</div>
 {% endblock %}

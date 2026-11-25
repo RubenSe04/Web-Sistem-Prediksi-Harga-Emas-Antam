@@ -1,12 +1,10 @@
 <aside class="sidebar" id="appSidebar" aria-label="Navigasi Utama">
     <div class="sidebar-header">
-        <a href="{{ url_for('home') }}" class="brand-link" aria-label="Beranda SVR Gold Analytics">
-            <div class="brand-icon-box">
-                <img src="{{ url_for('static', filename='img/logo_antam.png') }}" alt="Logo Emas Antam" width="26" height="26" loading="eager">
-            </div>
+        <a href="{{ url_for('home') }}" class="brand-link" aria-label="Beranda AI SVR">
+            <img src="{{ url_for('static', filename='img/logo_antam.png') }}" alt="Logo Emas Antam" width="38" height="38">
             <div class="brand-text">
-                <span class="brand-title">{{ site_content.brand.name if site_content and site_content.brand else 'SVR Gold Analytics' }}</span>
-                <span class="brand-subtitle">{{ site_content.brand.subtitle if site_content and site_content.brand else 'Decision Support' }}</span>
+                <span class="brand-title">AI SVR</span>
+                <span class="brand-subtitle">Decision Support</span>
             </div>
         </a>
         <button type="button" class="btn-sidebar-close" id="btnCloseSidebar" aria-label="Tutup menu navigasi">
@@ -14,13 +12,12 @@
         </button>
     </div>
 
-    <div class="sidebar-section-label">Menu Utama</div>
-    <nav aria-label="Menu Halaman">
+    <nav aria-label="Menu Halaman" class="flex-grow-1">
         <ul class="sidebar-nav">
             <li>
                 <a href="{{ url_for('home') }}" class="sidebar-nav-link {% if active_page == 'home' %}active{% endif %}" {% if active_page == 'home' %}aria-current="page"{% endif %}>
-                    <i class="fa-solid fa-Compass" aria-hidden="true"></i>
-                    <span>Terminal Proyeksi</span>
+                    <i class="fa-solid fa-house" aria-hidden="true"></i>
+                    <span>Beranda</span>
                 </a>
             </li>
             <li>
@@ -31,44 +28,15 @@
             </li>
             <li>
                 <a href="{{ url_for('about') }}" class="sidebar-nav-link {% if active_page == 'about' %}active{% endif %}" {% if active_page == 'about' %}aria-current="page"{% endif %}>
-                    <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
                     <span>Tentang Sistem</span>
                 </a>
             </li>
         </ul>
     </nav>
 
-    <div class="sidebar-section-label">Pintasan Fitur</div>
-    <ul class="sidebar-nav">
-        <li>
-            <a href="{{ url_for('home') }}#simulatorSection" class="sidebar-nav-link">
-                <i class="fa-solid fa-sliders" aria-hidden="true"></i>
-                <span>Simulator Sensitivitas</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ url_for('home') }}#calculatorSection" class="sidebar-nav-link">
-                <i class="fa-solid fa-calculator" aria-hidden="true"></i>
-                <span>Kalkulator Pajak PPh 22</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ url_for('dashboard') }}#historyTableSection" class="sidebar-nav-link">
-                <i class="fa-solid fa-table-list" aria-hidden="true"></i>
-                <span>Log Historis & CSV</span>
-            </a>
-        </li>
-    </ul>
-
-    <div class="sidebar-quick-actions">
-        <div class="sidebar-meta-card">
-            <div class="sidebar-meta-title">Akurasi Model SVR</div>
-            <p class="sidebar-meta-desc">R-Squared: <strong>93,02%</strong> (Kernel RBF Multivariat)</p>
-        </div>
-        <div class="sidebar-footer">
-            &copy; {{ site_content.brand.year if site_content and site_content.brand else '2026' }} {{ site_content.author.name if site_content and site_content.author else 'Ruben Setiaji' }}<br>
-            {{ site_content.brand.institution if site_content and site_content.brand else 'Universitas Tarumanagara' }}
-        </div>
+    <div class="sidebar-footer">
+        &copy; 2026<br>Universitas Tarumanagara
     </div>
 </aside>
 <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>

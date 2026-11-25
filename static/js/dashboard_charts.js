@@ -1,14 +1,13 @@
 /**
- * DASHBOARD ANALYTICS MODULE — HISTORICAL CHART, SMA/RSI TOGGLE, FEATURE IMPORTANCE, & TABLE FILTER
- * Mengelola seluruh visualisasi ilmiah dan tabel log historis pada halaman /dashboard.
+ * DASHBOARD ANALYTICS MODULE — HISTORICAL CHART, SMA/RSI TOGGLE, & 5-VARIABLE IMPORTANCE
  */
 
 (function () {
     let histChart = null;
 
     if (typeof Chart !== 'undefined') {
-        Chart.defaults.color = '#94A3B8';
-        Chart.defaults.borderColor = 'rgba(212, 175, 55, 0.12)';
+        Chart.defaults.color = '#8c8c8c';
+        Chart.defaults.borderColor = 'rgba(212, 175, 55, 0.1)';
         Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
     }
 
@@ -45,7 +44,7 @@
     }
 
     window.downloadDashboardCSV = function () {
-        let csvContent = 'data:text/csv;charset=utf-8,Tanggal,Harga Antam (1gr),SMA 7,SMA 30,Sinyal Pasar\n';
+        let csvContent = 'data:text/csv;charset=utf-8,Tanggal,Harga Antam,SMA 7,SMA 30,Sinyal Pasar\n';
         document.querySelectorAll('#dataTableBody tr').forEach((row) => {
             if (row.style.display === 'none') return;
             const cols = row.querySelectorAll('td');
@@ -55,23 +54,22 @@
         });
         const link = document.createElement('a');
         link.setAttribute('href', encodeURI(csvContent));
-        link.setAttribute('download', 'Laporan_Analitik_Historis_SVR.csv');
+        link.setAttribute('download', 'Laporan_Historis_SVR.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        if (window.AppUI) window.AppUI.showToast('Laporan CSV berhasil diunduh', 'fa-file-csv');
+        if (window.AppUI) window.AppUI.showToast('CSV berhasil diunduh');
     };
 
     document.addEventListener('DOMContentLoaded', () => {
         const histCanvas = document.getElementById('historicalChart');
-        if (!histCanvas) return; // Bukan halaman Dashboard
+        if (!histCanvas) return;
 
         fetch('/api/chart_data')
             .then((r) => r.json())
             .then((data) => {
                 if (data.status !== 'success') return;
 
-                // 1. Update Metrik Validasi Ilmiah
                 if (data.metrics) {
                     const rmseEl = document.getElementById('valRMSE');
                     const maeEl = document.getElementById('valMAE');
@@ -81,12 +79,7 @@
                     if (r2El) r2El.textContent = data.metrics.r2;
                 }
 
-                // 2. Render Grafik Tren Historis (dengan Area Gradient Emas ala Referensi)
                 const ctxHist = histCanvas.getContext('2d');
-                const areaGradient = ctxHist.createLinearGradient(0, 0, 0, 340);
-                areaGradient.addColorStop(0, 'rgba(212, 175, 55, 0.28)');
-                areaGradient.addColorStop(1, 'rgba(212, 175, 55, 0.00)');
-
                 const pointColors = data.labels.map((_, i) => (i === data.labels.length - 1 ? '#D4AF37' : 'transparent'));
                 const pointRadii = data.labels.map((_, i) => (i === data.labels.length - 1 ? 6 : 0));
                 const rsiData = calculateRSI(data.antam_prices);
@@ -97,44 +90,43 @@
                         labels: data.labels,
                         datasets: [
                             {
-                                label: 'Harga Emas Antam (IDR)',
+                                label: 'Harga Antam (IDR)',
                                 data: data.antam_prices,
-                                borderColor: '#D4AF37',
-                                backgroundColor: areaGradient,
-                                fill: true,
-                                borderWidth: 2.5,
+                                borderColor: '#ffffff',
+                                borderWidth: 2,
                                 pointBackgroundColor: pointColors,
                                 pointRadius: pointRadii,
-                                pointHoverRadius: 5,
-                                tension: 0.35,
+                                pointBorderWidth: 2,
+                                pointBorderColor: '#0f1014',
+                                tension: 0.4,
                                 yAxisID: 'y'
                             },
                             {
-                                label: 'SMA 7 (Tren Pendek)',
+                                label: 'SMA 7',
                                 data: data.sma7,
-                                borderColor: '#F8FAFC',
-                                borderWidth: 1.8,
+                                borderColor: '#D4AF37',
+                                borderWidth: 2,
                                 pointRadius: 0,
                                 borderDash: [5, 5],
-                                tension: 0.35,
+                                tension: 0.4,
                                 yAxisID: 'y'
                             },
                             {
-                                label: 'SMA 30 (Tren Panjang)',
+                                label: 'SMA 30',
                                 data: data.sma30,
-                                borderColor: '#10B981',
-                                borderWidth: 1.8,
+                                borderColor: '#ef4444',
+                                borderWidth: 2,
                                 pointRadius: 0,
-                                tension: 0.35,
+                                tension: 0.4,
                                 yAxisID: 'y'
                             },
                             {
-                                label: 'Momentum RSI (14)',
+                                label: 'RSI (14)',
                                 data: rsiData,
-                                borderColor: '#38BDF8',
+                                borderColor: '#3B82F6',
                                 borderWidth: 1.5,
                                 pointRadius: 0,
-                                borderDash: [3, 3],
+                                borderDash: [2, 2],
                                 tension: 0.3,
                                 yAxisID: 'y1',
                                 hidden: true
@@ -148,27 +140,14 @@
                         plugins: {
                             legend: {
                                 position: 'top',
-                                labels: { boxWidth: 12, usePointStyle: true, color: '#CBD5E1', font: { size: 12 } }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: (ctx) => {
-                                        if (ctx.dataset.yAxisID === 'y1') {
-                                            return `${ctx.dataset.label}: ${ctx.raw ? ctx.raw.toFixed(1) : '-'} poin`;
-                                        }
-                                        return `${ctx.dataset.label}: ${ctx.raw ? formatRupiah(ctx.raw) : '-'}`;
-                                    }
-                                }
+                                labels: { boxWidth: 12, usePointStyle: true, color: '#ffffff' }
                             }
                         },
                         scales: {
                             y: {
-                                grid: { color: 'rgba(255,255,255,0.06)' },
+                                grid: { color: 'rgba(255,255,255,0.05)', borderDash: [5, 5] },
                                 type: 'linear',
-                                position: 'left',
-                                ticks: {
-                                    callback: (val) => 'Rp ' + (val / 1000000).toFixed(2) + ' Jt'
-                                }
+                                position: 'left'
                             },
                             y1: {
                                 grid: { drawOnChartArea: false },
@@ -176,18 +155,14 @@
                                 position: 'right',
                                 min: 0,
                                 max: 100,
-                                ticks: { color: '#38BDF8' },
+                                ticks: { color: '#3B82F6' },
                                 display: false
                             },
-                            x: {
-                                grid: { display: false },
-                                ticks: { maxTicksLimit: 10 }
-                            }
+                            x: { grid: { display: false } }
                         }
                     }
                 });
 
-                // Toggle SMA & RSI
                 let smaVisible = true;
                 const btnSMA = document.getElementById('btnToggleSMA');
                 if (btnSMA) {
@@ -196,8 +171,8 @@
                         histChart.setDatasetVisibility(1, smaVisible);
                         histChart.setDatasetVisibility(2, smaVisible);
                         histChart.update();
-                        this.classList.toggle('active', smaVisible);
-                        this.setAttribute('aria-pressed', String(smaVisible));
+                        this.innerHTML = smaVisible ? '<i class="fa-solid fa-eye-slash"></i> SMA' : '<i class="fa-solid fa-eye"></i> SMA';
+                        this.style.opacity = smaVisible ? '1' : '0.55';
                     });
                 }
 
@@ -209,19 +184,19 @@
                         histChart.setDatasetVisibility(3, rsiVisible);
                         histChart.options.scales.y1.display = rsiVisible;
                         histChart.update();
-                        this.classList.toggle('active', rsiVisible);
-                        this.setAttribute('aria-pressed', String(rsiVisible));
+                        this.style.backgroundColor = rsiVisible ? '#3B82F6' : 'rgba(212, 175, 55, 0.08)';
+                        this.style.color = rsiVisible ? '#ffffff' : 'var(--gold-primary)';
+                        this.style.borderColor = rsiVisible ? '#3B82F6' : 'var(--border-gold-strong)';
                     });
                 }
 
-                // 3. Render Grafik Bobot & Sensitivitas Variabel
                 if (data.importance) {
                     const impCanvas = document.getElementById('importanceChart');
                     if (impCanvas) {
                         const ctxImp = impCanvas.getContext('2d');
-                        const barGrad = ctxImp.createLinearGradient(0, 0, 380, 0);
-                        barGrad.addColorStop(0, '#B58E24');
-                        barGrad.addColorStop(1, '#E5C158');
+                        const gradient = ctxImp.createLinearGradient(0, 0, 400, 0);
+                        gradient.addColorStop(0, '#AA771C');
+                        gradient.addColorStop(1, '#D4AF37');
 
                         new Chart(ctxImp, {
                             type: 'bar',
@@ -229,10 +204,9 @@
                                 labels: data.importance.labels,
                                 datasets: [
                                     {
-                                        label: 'Kontribusi (%)',
                                         data: data.importance.values,
-                                        backgroundColor: barGrad,
-                                        borderRadius: 6
+                                        backgroundColor: gradient,
+                                        borderRadius: 4
                                     }
                                 ]
                             },
@@ -240,22 +214,17 @@
                                 indexAxis: 'y',
                                 responsive: true,
                                 maintainAspectRatio: false,
-                                plugins: {
-                                    legend: { display: false },
-                                    tooltip: {
-                                        callbacks: { label: (c) => `Bobot Pengaruh: ${c.raw}%` }
-                                    }
-                                },
+                                plugins: { legend: { display: false } },
                                 scales: {
                                     x: {
                                         beginAtZero: true,
                                         max: 50,
-                                        grid: { color: 'rgba(255,255,255,0.06)' },
+                                        grid: { color: 'rgba(255,255,255,0.05)' },
                                         ticks: { callback: (v) => v + '%' }
                                     },
                                     y: {
                                         grid: { display: false },
-                                        ticks: { color: '#F8FAFC', font: { weight: '600' } }
+                                        ticks: { color: '#ffffff' }
                                     }
                                 }
                             }
@@ -271,20 +240,19 @@
                                 datasets: [
                                     {
                                         data: data.importance.values,
-                                        backgroundColor: ['#D4AF37', '#B58E24', '#10B981', '#38BDF8', '#64748B'],
-                                        borderColor: '#111318',
-                                        borderWidth: 2
+                                        backgroundColor: ['#D4AF37', '#AA771C', '#4b5563', '#10B981', '#3B82F6'],
+                                        borderWidth: 0
                                     }
                                 ]
                             },
                             options: {
                                 responsive: true,
                                 maintainAspectRatio: false,
-                                cutout: '72%',
+                                cutout: '75%',
                                 plugins: {
                                     legend: {
                                         position: 'right',
-                                        labels: { color: '#CBD5E1', font: { size: 12 }, padding: 14 }
+                                        labels: { color: '#8c8c8c', font: { size: 11 } }
                                     }
                                 }
                             }
@@ -296,14 +264,14 @@
                         new Chart(radarCanvas.getContext('2d'), {
                             type: 'radar',
                             data: {
-                                labels: ['Kurs USD/IDR', 'Spot XAU/USD', 'Antam (H-1)', 'Minyak WTI', 'Indeks DXY'],
+                                labels: ['KURS USD/IDR', 'EMAS GLOBAL', 'ANTAM H-1', 'MINYAK WTI', 'INDEKS DXY'],
                                 datasets: [
                                     {
-                                        label: 'Indeks Sensitivitas',
-                                        data: [88, 78, 56, 34, 42],
-                                        backgroundColor: 'rgba(212, 175, 55, 0.20)',
+                                        label: 'Sensitivitas',
+                                        data: [85, 75, 55, 30, 40],
+                                        backgroundColor: 'rgba(212, 175, 55, 0.2)',
                                         borderColor: '#D4AF37',
-                                        pointBackgroundColor: '#F8FAFC',
+                                        pointBackgroundColor: '#ffffff',
                                         pointBorderColor: '#D4AF37',
                                         borderWidth: 2
                                     }
@@ -315,9 +283,9 @@
                                 plugins: { legend: { display: false } },
                                 scales: {
                                     r: {
-                                        angleLines: { color: 'rgba(255,255,255,0.08)' },
-                                        grid: { color: 'rgba(255,255,255,0.08)' },
-                                        pointLabels: { color: '#CBD5E1', font: { size: 11, weight: '600' } },
+                                        angleLines: { color: 'rgba(255,255,255,0.05)' },
+                                        grid: { color: 'rgba(255,255,255,0.05)' },
+                                        pointLabels: { color: '#8c8c8c', font: { size: 10 } },
                                         ticks: { display: false, max: 100 }
                                     }
                                 }
@@ -326,7 +294,6 @@
                     }
                 }
 
-                // 4. Populate Tabel Log Data Historis
                 const tbody = document.getElementById('dataTableBody');
                 if (tbody) {
                     let html = '';
@@ -336,14 +303,14 @@
                         const sma7 = data.sma7[i] ? formatRupiah(data.sma7[i]) : '-';
                         const sma30 = data.sma30[i] ? formatRupiah(data.sma30[i]) : '-';
 
-                        let signalBadge = '<span class="status-badge status-badge-gold">LiveAktual</span>';
+                        let signalBadge = '<span class="status-badge status-badge-gold">Live</span>';
                         if (data.sma7[i] && data.sma30[i]) {
                             if (data.sma7[i] > data.sma30[i]) {
-                                signalBadge = '<span class="status-badge status-badge-success"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> Tren Bullish (Buy)</span>';
+                                signalBadge = '<span class="status-badge status-badge-success"><i class="fa-solid fa-arrow-trend-up"></i> Buy</span>';
                             } else if (data.sma7[i] < data.sma30[i]) {
-                                signalBadge = '<span class="status-badge status-badge-danger"><i class="fa-solid fa-arrow-trend-down" aria-hidden="true"></i> Tren Koreksi (Sell)</span>';
+                                signalBadge = '<span class="status-badge status-badge-danger"><i class="fa-solid fa-arrow-trend-down"></i> Sell</span>';
                             } else {
-                                signalBadge = '<span class="status-badge status-badge-gold"><i class="fa-solid fa-minus" aria-hidden="true"></i> Netral (Hold)</span>';
+                                signalBadge = '<span class="status-badge status-badge-gold"><i class="fa-solid fa-minus"></i> Hold</span>';
                             }
                         }
 
@@ -352,8 +319,8 @@
                             <tr class="${isLive ? 'row-live' : ''}">
                                 <td>${date}</td>
                                 <td>${price}</td>
-                                <td class="text-secondary-light">${sma7}</td>
-                                <td class="text-secondary-light">${sma30}</td>
+                                <td class="text-muted">${sma7}</td>
+                                <td class="text-muted">${sma30}</td>
                                 <td>${signalBadge}</td>
                             </tr>
                         `;
@@ -361,14 +328,12 @@
                     tbody.innerHTML = html;
                 }
 
-                // 5. Filter Pencarian Tabel
                 const filterInput = document.getElementById('tableSearchFilter');
                 if (filterInput && tbody) {
                     filterInput.addEventListener('input', function () {
                         const q = this.value.trim().toLowerCase();
                         tbody.querySelectorAll('tr').forEach((tr) => {
-                            const text = tr.innerText.toLowerCase();
-                            tr.style.display = text.includes(q) ? '' : 'none';
+                            tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none';
                         });
                     });
                 }

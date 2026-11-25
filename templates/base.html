@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}SVR Gold Analytics | Sistem Prediksi Harga Emas Antam{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}Sistem Pendukung Keputusan proyeksi harga emas batangan PT Antam Tbk (H+1) menggunakan algoritma Support Vector Regression (SVR) multivariat.{% endblock %}">
+    <title>{% block title %}Prediksi Emas Antam | AI SVR{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Platform proyeksi dan simulasi investasi Emas Antam (H+1) berbasis algoritma Support Vector Regression (SVR) multivariat.{% endblock %}">
     <meta name="author" content="Ruben Setiaji - Universitas Tarumanagara">
     <link rel="canonical" href="{{ request.base_url }}">
 
-    <!-- Open Graph / Social Meta -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}{{ self.meta_description() }}{% endblock %}">
@@ -17,7 +16,6 @@
 
     <link rel="icon" href="{{ url_for('static', filename='img/logo_antam.png') }}" type="image/png">
 
-    <!-- Fonts & Stylesheets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,46 +25,34 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <!-- Accessibility Skip Link -->
     <a href="#mainContent" class="skip-link">Lewati ke konten utama</a>
 
-    <!-- Modular Sidebar -->
     {% include 'partials/_sidebar.html' %}
 
-    <!-- Main Application Shell -->
     <div class="main-wrapper">
-        <!-- Top Utility Bar (Breadcrumb + Quick Search Ctrl+K + Sync Status) -->
-        {% include 'partials/_topbar.html' %}
-
-        <!-- Live Market Ticker Strip -->
-        <aside class="ticker-bar" aria-label="Pita Harga Pasar Terkini">
-            <div class="ticker-track" id="liveTicker">
-                <span class="ticker-node"><span class="skeleton-line" style="width: 180px;"></span></span>
-                <span class="ticker-node"><span class="skeleton-line" style="width: 160px;"></span></span>
-                <span class="ticker-node"><span class="skeleton-line" style="width: 170px;"></span></span>
-                <span class="ticker-node"><span class="skeleton-line" style="width: 160px;"></span></span>
+        <!-- RUNNING MARQUEE TICKER (ANIMASI 5+1 VARIABEL PASAR) -->
+        <aside class="ticker-wrap" aria-label="Pita Harga Pasar Live">
+            <div class="ticker-move" id="liveTicker">
+                <span class="ticker-item">Memuat Sinkronisasi Pasar...</span>
             </div>
         </aside>
 
-        <!-- Main Semantic Content -->
+        {% include 'partials/_topbar.html' %}
+
         <main id="mainContent" class="page-main" tabindex="-1">
             {% block content %}{% endblock %}
         </main>
 
-        <!-- Academic Footer -->
         {% include 'partials/_footer.html' %}
     </div>
 
-    <!-- Quick Search Modal (Ctrl+K) -->
     {% include 'partials/_search_modal.html' %}
 
-    <!-- Global Toast Notification -->
     <div id="globalToast" class="toast-notification" role="status" aria-live="polite">
-        <i id="globalToastIcon" class="fa-solid fa-circle-check text-gold" aria-hidden="true"></i>
-        <span id="globalToastMsg">Data berhasil diperbarui</span>
+        <i id="globalToastIcon" class="fa-solid fa-check-circle" aria-hidden="true"></i>
+        <span id="globalToastMsg">Data Tersimpan</span>
     </div>
 
-    <!-- Inject Search Index from CMS JSON -->
     <script>
         window.SITE_SEARCH_INDEX = {{ (site_content.search_index if site_content and site_content.search_index else []) | tojson }};
     </script>

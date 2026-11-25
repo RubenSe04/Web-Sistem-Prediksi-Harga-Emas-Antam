@@ -1,90 +1,85 @@
 /* ==========================================================================
-   DESIGN TOKENS — EXECUTIVE DARK & ROYAL GOLD THEME
-   Standar WCAG AA Contrast & Modular Design System
+   DESIGN TOKENS — EXECUTIVE DARK & ROYAL GOLD THEME (REFINED PROPORTIONS)
    ========================================================================== */
 
 :root {
-    /* 1. PALET WARNA UTAMA (DEEP BLACK & SURFACE) */
+    /* 1. PALET WARNA UTAMA (DEEP BLACK & RICH SURFACE) */
     --bg-canvas: #07080A;
-    --bg-sidebar: #0A0B0E;
+    --bg-sidebar: #0B0C10;
     --bg-surface: #111318;
-    --bg-surface-elevated: #171A21;
-    --bg-surface-hover: #1D212A;
-    --bg-input: #0B0D11;
+    --bg-surface-elevated: #161920;
+    --bg-surface-hover: #1C2029;
+    --bg-input: #0B0C10;
 
-    /* 2. PALET AKSEN ROYAL GOLD (TERINSPIRASI EXECUTIVE DASHBOARD) */
+    /* 2. PALET AKSEN ROYAL GOLD */
     --gold-primary: #D4AF37;
-    --gold-bright: #E5C158;
-    --gold-deep: #B58E24;
-    --gold-subtle: rgba(212, 175, 55, 0.12);
-    --gold-subtle-hover: rgba(212, 175, 55, 0.20);
-    --gold-pill-gradient: linear-gradient(90deg, #D4AF37 0%, #B8891E 100%);
-    --gold-btn-gradient: linear-gradient(135deg, #DDB840 0%, #B8891E 100%);
+    --gold-bright: #F3E5AB;
+    --gold-deep: #AA771C;
+    --gold-subtle: rgba(212, 175, 55, 0.10);
+    --gold-subtle-hover: rgba(212, 175, 55, 0.18);
+    --gold-pill-gradient: linear-gradient(90deg, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0.03) 100%);
+    --gold-btn-gradient: linear-gradient(135deg, #BF953F 0%, #FCF6BA 35%, #B38728 70%, #AA771C 100%);
 
-    /* 3. TIPOGRAFI & KONTRAS TEKS (WCAG AA COMPLIANT >= 4.5:1) */
-    --text-primary: #F8FAFC;      /* ~19:1 di atas #07080A */
-    --text-secondary: #CBD5E1;    /* ~13:1 di atas #111318 */
-    --text-muted: #94A3B8;        /* ~6.8:1 di atas #111318 */
-    --text-on-gold: #07080A;      /* Kontras tajam di atas tombol emas */
+    /* 3. TIPOGRAFI & KONTRAS TEKS (WCAG AA COMPLIANT) */
+    --text-primary: #F8FAFC;
+    --text-secondary: #CBD5E1;
+    --text-muted: #94A3B8;
+    --text-on-gold: #07080A;
 
     /* 4. WARNA STATUS SEMANTIK */
     --status-success: #10B981;
-    --status-success-bg: rgba(16, 185, 129, 0.14);
-    --status-success-border: rgba(16, 185, 129, 0.35);
+    --status-success-bg: rgba(16, 185, 129, 0.12);
+    --status-success-border: rgba(16, 185, 129, 0.30);
 
-    --status-danger: #F43F5E;
-    --status-danger-bg: rgba(244, 63, 94, 0.14);
-    --status-danger-border: rgba(244, 63, 94, 0.35);
+    --status-danger: #EF4444;
+    --status-danger-bg: rgba(239, 68, 68, 0.12);
+    --status-danger-border: rgba(239, 68, 68, 0.30);
 
     --status-warning: #F59E0B;
-    --status-warning-bg: rgba(245, 158, 11, 0.14);
-    --status-info: #38BDF8;
+    --status-info: #3B82F6;
 
     /* 5. BORDER & GARIS PEMISAH */
-    --border-subtle: rgba(255, 255, 255, 0.07);
-    --border-gold: rgba(212, 175, 55, 0.22);
-    --border-gold-strong: rgba(212, 175, 55, 0.48);
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-gold: rgba(212, 175, 55, 0.16);
+    --border-gold-strong: rgba(212, 175, 55, 0.42);
 
-    /* 6. SKALA TIPOGRAFI */
+    /* 6. SKALA TIPOGRAFI (PROPORSIONAL & TIDAK KEBESARAN) */
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 
-    --text-xs: 0.8125rem;   /* 13px - batas minimum teks penting */
-    --text-sm: 0.875rem;    /* 14px */
-    --text-base: 1rem;      /* 16px - standar body text */
-    --text-lg: 1.125rem;    /* 18px */
-    --text-xl: 1.25rem;     /* 20px */
-    --text-2xl: 1.5rem;     /* 24px */
-    --text-3xl: 1.875rem;   /* 30px */
+    --text-xs: 0.78rem;     /* 12.5px */
+    --text-sm: 0.85rem;     /* 13.6px */
+    --text-base: 0.9375rem; /* 15px */
+    --text-lg: 1.05rem;     /* 16.8px */
+    --text-xl: 1.35rem;     /* 21.6px */
+    --text-2xl: 1.55rem;    /* 24.8px */
 
     --leading-tight: 1.25;
-    --leading-normal: 1.55;
-    --leading-relaxed: 1.65;
+    --leading-normal: 1.5;
 
     /* 7. SPACING & UKURAN LAYOUT */
-    --sidebar-width: 264px;
-    --topbar-height: 68px;
-    --touch-target-min: 44px;
+    --sidebar-width: 248px;
+    --topbar-height: 56px;
+    --touch-target-min: 40px;
 
-    --space-1: 0.25rem;  /* 4px */
-    --space-2: 0.5rem;   /* 8px */
-    --space-3: 0.75rem;  /* 12px */
-    --space-4: 1rem;     /* 16px */
-    --space-5: 1.25rem;  /* 20px */
-    --space-6: 1.5rem;   /* 24px */
-    --space-8: 2rem;     /* 32px */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
 
     /* 8. BORDER RADIUS & SHADOWS */
     --radius-sm: 8px;
-    --radius-md: 12px;
+    --radius-md: 14px;
     --radius-lg: 16px;
     --radius-pill: 9999px;
 
-    --shadow-card: 0 8px 24px -4px rgba(0, 0, 0, 0.55);
-    --shadow-elevated: 0 16px 36px -6px rgba(0, 0, 0, 0.72);
-    --shadow-gold-subtle: 0 4px 16px rgba(212, 175, 55, 0.18);
+    --shadow-card: 0 10px 28px -6px rgba(0, 0, 0, 0.6);
+    --shadow-elevated: 0 18px 40px -8px rgba(0, 0, 0, 0.78);
+    --shadow-gold-subtle: 0 4px 15px rgba(212, 175, 55, 0.22);
 
-    /* 9. TRANSISI (150ms - 250ms) */
-    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-base: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+    /* 9. TRANSISI */
+    --transition-fast: 160ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 240ms cubic-bezier(0.4, 0, 0.2, 1);
 }
